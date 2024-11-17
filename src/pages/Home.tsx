@@ -5,7 +5,7 @@ import { auth } from "../firebase/firebase-config"
 import { fetchUserProfile, useAuth } from "../contexts/authContext"
 
 function Home() {
-    const { currentUser, userLoggedIn } = useAuth()
+    const { userLoggedIn } = useAuth()
     const [username, setUsername] = useState("")
 
     useEffect(() => {
