@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --p: #52bc82;
+  --fallback-b1: #1A1A1A;
+  --b1: #1A1A1A;
+  --btn-color: #1E1E1E;
+  --bc: white;
+  --fallback-bc: white;
+}
+
+@layer base {
+    html {
+      font-family: "Inter", system-ui, sans-serif;
+    }
+}
+
+body {
+  background: url("./assets/images/grunge.png") repeat-y center center fixed;
+  background-size: cover;
+}
