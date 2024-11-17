@@ -6,6 +6,9 @@ import {
     sendEmailVerification,
     updatePassword
 } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+
+const db = getFirestore()
 
 export const doCreateUserWithEmailAndPassword = async (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -36,3 +39,13 @@ export const doSendEmailVerification = () => {
         });
     }
 };
+
+export const saveUserProfile = async (userId: string, profile: {username: string}) => {
+    try {
+        const userDocRef = doc(db, "users", userId)
+        await setDoc(userDocRef, profile)
+        console.log("Profile saved successfully!")
+    } catch (err) {
+        console.log("Error saving profile: " + err)
+    }
+}
