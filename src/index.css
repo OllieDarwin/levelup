@@ -21,3 +21,8 @@ body {
   background: url("./assets/images/grunge.png") repeat-y center center fixed;
   background-size: cover;
 }
+
+svg:hover {
+  opacity: 0.8;
+  transition: opacity 0.1s ease-in-out;
+}

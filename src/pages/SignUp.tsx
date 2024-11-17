@@ -43,8 +43,8 @@ function SignUp() {
 
             <div className="min-h-screen h-screen">
                 <Navbar></Navbar>
-                <div className="flex flex-col min-h-[calc(100vh-5rem)]">
-                    <div className="container mx-auto mt-12 w-[90%] bg-[--btn-color] rounded-t-2xl shadow flex-1">
+                <div className="flex flex-col min-h-[calc(100vh-7rem)]">
+                    <div className="container mx-auto mt-4 w-[90%] bg-[--btn-color] rounded-t-2xl shadow flex-1">
                         <div className="flex flex-col my-24 bg-[--b1] px-16 rounded-2xl max-w-min py-16 mx-auto">
                             <h1 className="font-semibold text-4xl ml-2 ">Sign up</h1>
                             <label className="text-gray-400 ml-2 my-2 min-w-max">Already have an account? <Link to="/login" className="text-[--p] underline">Login</Link></label>
