@@ -41,12 +41,12 @@ function Login() {
             {userLoggedIn && (<Navigate to={'/home'} replace={true} />)}
 
             <div className="min-h-screen h-screen">
-                <Navbar></Navbar>
-                <div className="flex flex-col min-h-[calc(100vh-7rem)]">
+                <Navbar showNav={false}></Navbar>
+                <div className="flex flex-col min-h-[calc(100vh-6.05rem)]">
                     <div className="container mx-auto mt-4 w-[90%] bg-[--btn-color] rounded-t-2xl shadow flex-1">
                         <div className="flex flex-col my-24 bg-[--b1] px-16 rounded-2xl max-w-min py-16 mx-auto">
                             <h1 className="font-semibold text-4xl ml-2 ">Log in</h1>
-                            <label className="text-gray-400 ml-2 my-2 min-w-max">Don't have an account yet? <Link to="/signup" className="text-[--p] underline">Sign Up</Link></label>
+                            <label className="text-gray-400 ml-2 my-2 min-w-max text-sm">Don't have an account yet? <Link to="/signup" className="text-[--p] underline">Sign Up</Link></label>
                             <form autoComplete="off" onSubmit={signIn}>
                                 <label className="input rounded-full bg-[--btn-color]  flex items-center gap-2 max-w-xs">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
@@ -57,8 +57,8 @@ function Login() {
                                     <input required type="password" name="password" id="password" placeholder="Password" className="grow" autoComplete="false" onChange={(e) => setPassword(e.target.value)} />
                                 </label>
                                 {/* CREATE FORGOT PASSWORD PAGE */}
-                                <label className="max-w-xs w-full block mt-4 ml-2">Forgot Password?</label>
-                                <label className="text-[#EC5657] ml-2 mt-4 max-w-xs">{errorMessage}</label>
+                                <label className="max-w-xs w-full block mt-4 ml-2 text-sm">Forgot Password?</label>
+                                {errorMessage !== "" && <label className="text-[#EC5657] ml-2 mt-4 max-w-xs text-sm">{errorMessage}</label>}
                                 <input className="btn rounded-full bg-[--p] border-none max-w-xs w-full mt-4" type="submit" value="Login"/>
                             </form>
                         </div>
