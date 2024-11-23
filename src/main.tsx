@@ -7,6 +7,7 @@ import About from './pages/About'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import { AuthProvider } from './contexts/authContext'
+import Quiz from './pages/games/Quiz'
 
 const router = createBrowserRouter([
   {
@@ -28,13 +29,15 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />
+  },
+  {
+    path: "/games/quiz",
+    element: <Quiz />
   }
 ])
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  </StrictMode>,
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 )

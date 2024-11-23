@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar"
 import { useEffect, useState } from "react"
 import { auth } from "../firebase/firebase-config"
 import { fetchUserProfile, useAuth } from "../contexts/authContext"
+import BodyCard from "../components/BodyCard"
 
 function Home() {
     const { userLoggedIn } = useAuth()
@@ -28,14 +29,14 @@ function Home() {
             
             <div className="min-h-screen h-screen">
                 <Navbar showNav={true}></Navbar>
-                <div className="flex flex-col min-h-[calc(100vh-6.05rem)]">
-                    <div className="container mx-auto mt-4 w-[90%] bg-[--btn-color] rounded-t-2xl shadow flex-1">
-                        <h1 className="font-semibold text-center mt-24 text-4xl">Welcome to <span className="text-[--p]">LevelUp</span>!</h1>
-                        {username && 
-                            <h1 className="font-normal text-[#CACACA] text-center mt-8 text-xl">Welcome back, {username || "LOADING"}. Feel free to scroll and see what we’re about and play some games!</h1>
-                        }
-                    </div>
-                </div>
+
+                {/* Main card */}
+                <BodyCard>
+                    <h1 className="font-semibold text-center mt-24 text-4xl">Welcome to <span className="text-[--p]">LevelUp</span>!</h1>
+                    {username && 
+                        <h1 className="font-normal text-[#CACACA] text-center mt-8 text-xl">Welcome back, {username || "LOADING"}. Feel free to scroll and see what we’re about and play some games!</h1>
+                    }
+                </BodyCard>
             </div>
         </>
     )

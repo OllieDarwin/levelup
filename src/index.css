@@ -9,6 +9,7 @@
   --btn-color: #1E1E1E;
   --bc: white;
   --fallback-bc: white;
+  --warning: #EC5657;
 }
 
 @layer base {
