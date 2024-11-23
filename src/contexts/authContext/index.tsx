@@ -1,9 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import { auth } from "../../firebase/firebase-config"
 import { onAuthStateChanged, User } from "firebase/auth"
-import { doc, getDoc, getFirestore } from "firebase/firestore"
-
-const db = getFirestore()
 
 export interface ExtendedUser extends User {
     username?: string
@@ -62,24 +59,3 @@ export function AuthProvider({ children }: AuthProviderProps) {
     </AuthContext.Provider>
   );
 }
-
-export const fetchUserProfile = async (userId: string | null) => {
-    if (userId === null) {
-        return null
-    }
-    try {
-        const userDocRef = doc(db, "users", userId)
-        const userSnapshot = await getDoc(userDocRef)
-
-        if (userSnapshot.exists()) {
-            console.log("User data:", userSnapshot.data())
-            return userSnapshot.data()
-        } else {
-            console.log("No user data found!")
-            return null
-        }
-    } catch (error) {
-            console.error("Error fetching user profile:", error)
-            return null
-    }
-};

@@ -43,9 +43,11 @@ function Navbar({ showNav }: Props) {
                                             <svg className={"feather feather-home size-6 " + (url === "/about" ? "stroke-[--p]" : "stroke-white")} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"  fill="none" stroke="currentColor" strokeWidth="2" ><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                                     </div>
                                 </Link>
-                                <div className="btn join-item px-6 border-none">
-                                    <svg className="feather feather-home stroke-white size-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                                </div>
+                                <Link to="/games">
+                                    <div className="btn join-item px-6 border-none">
+                                        <svg className={"feather feather-home size-6 " + (url.split("/")[1] === "games" ? "stroke-[--p]" : "stroke-white")} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                    </div>
+                                </Link> 
                                 <div className="btn join-item px-6 border-none">
                                     <svg className="feather feather-home stroke-white size-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                 </div>
@@ -70,9 +72,9 @@ function Navbar({ showNav }: Props) {
                                     <div className="rounded-full px-3 py-1 w-14">
                                     </div>
                                 }
-                                {url == "/play" ?
+                                {url.split("/")[1] == "games" ?
                                     <div className="rounded-full px-3 py-1 bg-[--btn-color] w-14">
-                                        <p className="text-[0.6rem] text-center">Play</p>
+                                        <p className="text-[0.6rem] text-center">Games</p>
                                     </div>
                                 :
                                     <div className="rounded-full px-3 py-1 w-14">
@@ -138,9 +140,11 @@ function Navbar({ showNav }: Props) {
                                         <svg className={"feather feather-home size-6 " + (url === "/about" ? "stroke-[--p]" : "stroke-white")} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"  fill="none" stroke="currentColor" strokeWidth="2" ><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                                 </div>
                             </Link>
-                            <div className="btn join-item px-6 border-none">
-                                <svg className="feather feather-home stroke-white size-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </div>
+                            <Link to="/games">
+                                <div className="btn join-item px-6 border-none">
+                                    <svg className={"feather feather-home stroke-white size-6" + (url.split("/")[1] === "games" ? "stroke-[--p]" : "stroke-white")} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                </div>
+                            </Link> 
                             <div className="btn join-item px-6 border-none">
                                 <svg className="feather feather-home stroke-white size-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                             </div>

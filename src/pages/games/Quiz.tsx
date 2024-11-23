@@ -5,6 +5,7 @@ import BodyCard from "../../components/BodyCard"
 
 import { useEffect, useState } from "react"
 import { generateQuestion, getSolution } from "../../services/aiService"
+import { fetchUserProfile, saveUserProfile } from "../../firebase/auth"
 
 const defaultQuestion = {
     "question": "What is 40% of 120?",
@@ -13,7 +14,23 @@ const defaultQuestion = {
 }
 
 function Quiz() {
-    const { userLoggedIn } = useAuth()
+
+    // User state
+    const { currentUser, userLoggedIn } = useAuth()
+    const [currentXP, setCurrentXP] = useState(0)
+
+    useEffect(() => {
+        const loadUserProfile = async () => {
+            if (currentUser) {
+                const profile = await fetchUserProfile(currentUser.uid)
+                if(profile !== null) {
+                    setCurrentXP(profile.xp)
+                }
+            }
+        }
+
+        loadUserProfile()
+    }, [userLoggedIn])
 
     // Current question state
     const [question, setQuestion] = useState<{ question: string, title: string, description: string }>(defaultQuestion)
@@ -27,6 +44,7 @@ function Quiz() {
     const [leftoverTime, setLeftoverTime] = useState(180)
     const [score, setScore] = useState(0)
     const [showScore, setShowScore] = useState(false)
+    const [gameEnded, setGameEnded] = useState(false)
 
     // Timer
     useEffect(() => {
@@ -46,10 +64,13 @@ function Quiz() {
         setPlaying(true)
     }
 
-    const endGame = () => {
+    const endGame = async () => {
+        setGameEnded(true)
         setPlaying(false)
-        console.log(score)
         setShowScore(true)
+        if (currentUser !== null) {
+            await saveUserProfile(currentUser?.uid, {xp: currentXP + score})
+        }
     }
 
     const loadQuestion = async () => {
@@ -89,12 +110,14 @@ function Quiz() {
                 {/* Main Game */}
                 <BodyCard>
                     {/* Game bar */}
-                    <div className="navbar w-[80%] fixed left-[50%] translate-x-[-50%] mt-6">
+                    <div className="navbar w-[80%] fixed left-[50%] translate-x-[-50%] mt-8">
                         <div className="navbar-start">
-                            {!playing ? 
-                            <button className="btn bg-[--p] border-none rounded-full px-8" onClick={startGame}>Start</button>
+                            {playing && !gameEnded ?
+                            <div className="btn pointer-events-none bg-[--b1] border-none px-8 py-2 rounded-full">{ score.toLocaleString() }</div>
                             :
-                            <button className="btn bg-[--warning] border-none rounded-full px-8" onClick={endGame}>End</button>}
+                            <button className="btn bg-[--p] border-none rounded-full px-8" onClick={startGame}>Start</button>
+                            }
+                            
                         </div>
                         <div className="navbar-end">
                             <div className="btn pointer-events-none bg-[--b1] border-none px-8 py-2 rounded-full">{ Math.floor(leftoverTime / 60) }:{ String(leftoverTime % 60).padStart(2, '0') }</div>
@@ -105,7 +128,7 @@ function Quiz() {
                     <div className="card card-compact fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] z-10 shadow-xl bg-[--btn-color] w-[30%]">
                         <div className="card-body mx-auto text-center">
                             <h2 className="text-2xl font-medium mt-8">Well done!</h2>
-                            <h1 className="text-4xl font-semibold">Score: <span className="text-[--p]">{score.toLocaleString()}</span></h1>
+                            <h1 className="text-4xl font-semibold">Score: <span className="text-[--p]">{ score.toLocaleString() }</span></h1>
                             <Link to="/home">
                                 <button className="btn rounded-full bg-[--p] border-none my-8 px-8">Go back</button>
                             </Link>
@@ -113,7 +136,7 @@ function Quiz() {
                     </div>
                     }
                     {/* Main game question */}
-                    <div className={(!playing && "blur-sm pointer-events-none") + " flex flex-col items-center"}>
+                    <div className={(!playing && "blur-sm pointer-events-none") + " flex flex-col items-center mb-4 mt-auto"}>
                         {/* Question display */}
                         <div className="card card-compact bg-[--btn-color] w-[50%] shadow-xl mx-auto mt-16">
                             <figure className="bg-[--b1] h-36 px-16 text-center">
@@ -136,8 +159,8 @@ function Quiz() {
                             </div>
                         </div>
                         {/* Text area & solution area */}
-                        <div className="flex w-[50%] mx-auto gap-4">
-                            <textarea name="solution" id="solution" className={(solution !== null ? "w-1/2" : "w-full") + " textarea mt-8 h-48"} value={textAreaText} placeholder="Write your solution here" onChange={(e) => {
+                        <div className="flex w-[50%] mx-auto gap-4 h-48">
+                            <textarea name="solution" id="solution" className={(solution !== null ? "w-1/2" : "w-full") + " textarea mt-8"} value={textAreaText} placeholder="Write your solution here" onChange={(e) => {
                                 setUserSolution(e.target.value)
                                 setTextAreaText(e.target.value)
                             }}></textarea>

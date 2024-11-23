@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home'
@@ -8,6 +7,7 @@ import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import { AuthProvider } from './contexts/authContext'
 import Quiz from './pages/games/Quiz'
+import Games from './pages/Games'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />
+  },
+  {
+    path: "/games",
+    element: <Games />
   },
   {
     path: "/games/quiz",

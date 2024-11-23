@@ -26,8 +26,7 @@ function SignUp() {
                 setErrorMessage("")
                 const userCredential = await doCreateUserWithEmailAndPassword(email, password)
                 const user = userCredential.user
-
-                await saveUserProfile(user.uid, {username})
+                await saveUserProfile(user.uid, {username: username})
             }
       
           } catch (error: any) {
@@ -62,7 +61,7 @@ function SignUp() {
                                 <input disabled={isRegistering} required type="password" name="password" id="password" placeholder="Password" className="grow" autoComplete="false" onChange={(e) => setPassword(e.target.value)} />
                             </label>
                             {errorMessage !== "" && <label className="text-[--warning] ml-2 mt-4 max-w-xs text-sm">{errorMessage}</label>}
-                            <input className="btn rounded-full bg-[--p] border-none max-w-xs w-full mt-4" type="submit" value="Login"/>
+                            <input className="btn rounded-full bg-[--p] border-none max-w-xs w-full mt-4" type="submit" value="Sign Up"/>
                         </form>
                     </div>
                 </BodyCard>
