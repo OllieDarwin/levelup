@@ -9,7 +9,7 @@ function Leaderboard() {
     const { currentUser, userLoggedIn } = useAuth()
     const [currentUsername, setCurrentUsername] = useState("")
 
-    const [data, setData] = useState<{userID: string, username: string, xp: number}[]>([])
+    const [data, setData] = useState<{userID: string, username: string, xp: number, iconURL: string}[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -48,10 +48,11 @@ function Leaderboard() {
             {loading ? 
             <span className="loading loading-infinity loading-lg m-auto"></span>
             : 
-            data.map(({username, xp}, i) => (
+            data.map(({username, xp, iconURL}, i) => (
                 <Link to={"/profile/" + username}>
                     <div className={"flex rounded-2xl py-2 " + (username === currentUsername ? "bg-[--p]" : "bg-[--btn-color]")}>
                         <p className="my-auto mx-8 font-black">{i+1}</p>
+                        <img className="size-12 bg-white rounded-full my-auto mr-4" src={iconURL || "/src/assets/user-icons/1.png"} alt="User icon" />
                         <div>
                             <h1 className="font-bold text-lg">{username}</h1>
                             <h2 className={(username === currentUsername ? "text-white" : "text-[#CACACA]")}>Score: {xp.toLocaleString()}</h2>

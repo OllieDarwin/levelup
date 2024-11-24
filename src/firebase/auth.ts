@@ -13,13 +13,15 @@ const db = getFirestore()
 interface UserProfile {
     username?: string,
     email?: string,
-    xp?: number
+    xp?: number,
+    iconURL: string
 }
 
 const defaultUserProfile: UserProfile = {
     username: "",
     email: "",
-    xp: 0
+    xp: 0,
+    iconURL: `/src/assets/user-icons/${Math.floor(Math.random()*7)+1}.png`
 }
 
 export const doCreateUserWithEmailAndPassword = async (email: string, password: string) => {
@@ -86,7 +88,7 @@ export const fetchUserProfile = async (userId: string | null) => {
     }
 };
 
-export const getTopUsersByXP = async (): Promise<{userID: string, username: string, xp: number}[]> => {
+export const getTopUsersByXP = async (): Promise<{userID: string, username: string, xp: number, iconURL: string}[]> => {
     try {
         const userCollection = collection(db, "users")
         const topUsersQuery = query(userCollection, orderBy("xp", "desc"), limit(5))
@@ -94,7 +96,7 @@ export const getTopUsersByXP = async (): Promise<{userID: string, username: stri
         const topUsers = querySnapshot.docs.map((doc) => ({
             userID: doc.id,
             ...doc.data(),
-        })) as {userID: string, username: string, xp: number}[]
+        })) as {userID: string, username: string, xp: number, iconURL: string}[]
 
         return topUsers
     } catch (error) {
@@ -172,7 +174,7 @@ export const getFriendRequests = async (userID: string) => {
         const querySnapshot = await getDocs(friendRequestsQuery)
         const friendRequests = querySnapshot.docs.map((doc) => ({
             ...doc.data()
-        })) as {friendID: string, friendName: string, sentAt: Timestamp, status: "pending" | "received"}[]
+        })) as {friendID: string, friendName: string, sentAt: Timestamp, status: "pending" | "received", iconURL: string}[]
 
         return friendRequests
     } catch (error) {
@@ -235,6 +237,21 @@ export const getUsernameFromID = async (userID: string) => {
         }
     } catch (error) {
         console.error("Error fetching username by user ID:", error)
+        throw error
+    }
+}
+
+export const getUserIconFromID = async (userID: string) => {
+    try {
+        const userDocRef = doc(db, "users", userID)
+        const userSnapshot = await getDoc(userDocRef)
+
+        if (userSnapshot.exists()) {
+            return userSnapshot.data().iconURL
+        }
+
+    } catch (error) {
+        console.error("Error fetchin icon from ID:", error)
         throw error
     }
 }
