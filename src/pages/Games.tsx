@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar"
 import { useAuth } from "../contexts/authContext"
 import BodyCard from "../components/BodyCard"
 
-import quiz from "../assets/images/quiz.jpg"
+import Leaderboard from "../components/Leaderboard"
 
 function About() {
     const { userLoggedIn } = useAuth()
@@ -15,27 +15,46 @@ function About() {
             <div className="min-h-screen h-screen">
                 <Navbar showNav={true}></Navbar>
                 <BodyCard>
-                    <div className="flex w-full mx-auto justify-center gap-16 my-auto">
-                        <Link to="/games/quiz">
-                            <div className="card card-compact bg-[--b1] rounded-box place-items-center h-64 w-96">
-                                <figure>
-                                    <img src={quiz} alt="" />
-                                </figure>
-                                <div className="card-content py-6">
-                                    <h1 className="card-title">Maths Quiz</h1>
+                    <div className="flex mx-8 h-full my-auto">
+                        <div className="grid grid-cols-2 mx-8 my-auto h-[90%] gap-8 w-full">
+                            <Link to="/games/quiz">
+                                <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
+                                    <figure>
+                                    </figure>
+                                    <div className="card-content py-6">
+                                        <h1 className="card-title">Maths Quiz</h1>
+                                    </div>
                                 </div>
-                            </div>
-                        </Link>
-                        <Link to="/games">
-                            <div className="card card-compact bg-[--b1] rounded-box place-items-center h-64 w-96">
-                                <figure>
-                                    <img src={quiz} alt="" />
-                                </figure>
-                                <div className="card-content py-6">
-                                    <h1 className="card-title">Example Game</h1>
+                            </Link>
+                            <Link to="/games">
+                                <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
+                                    <figure>
+                                    </figure>
+                                    <div className="card-content py-6">
+                                        <h1 className="card-title">Example Game</h1>
+                                    </div>
                                 </div>
-                            </div>
-                        </Link>
+                            </Link>
+                            <Link to="/games">
+                                <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
+                                    <figure>
+                                    </figure>
+                                    <div className="card-content py-6">
+                                        <h1 className="card-title">Example Game</h1>
+                                    </div>
+                                </div>
+                            </Link>
+                            <Link to="/games">
+                                <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
+                                    <figure>
+                                    </figure>
+                                    <div className="card-content py-6">
+                                        <h1 className="card-title">Example Game</h1>
+                                    </div>
+                                </div>
+                            </Link>
+                        </div>
+                        <Leaderboard />
                     </div>
                 </BodyCard>
             </div>

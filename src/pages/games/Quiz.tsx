@@ -136,7 +136,7 @@ function Quiz() {
                     </div>
                     }
                     {/* Main game question */}
-                    <div className={(!playing && "blur-sm pointer-events-none") + " flex flex-col items-center mb-4 mt-auto"}>
+                    <div className={(!playing && "blur-sm pointer-events-none") + " flex flex-col items-center my-auto"}>
                         {/* Question display */}
                         <div className="card card-compact bg-[--btn-color] w-[50%] shadow-xl mx-auto mt-16">
                             <figure className="bg-[--b1] h-36 px-16 text-center">
@@ -153,7 +153,7 @@ function Quiz() {
                                 :
                                 <>
                                     <h2 className="card-title">{question.title}</h2>
-                                    <p>{question.description}</p>
+                                    <p className="text-[#CACACA]">{question.description}</p>
                                 </>
                                 }
                             </div>

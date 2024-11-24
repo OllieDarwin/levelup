@@ -5,6 +5,8 @@ import { useAuth } from "../contexts/authContext"
 import BodyCard from "../components/BodyCard"
 import { fetchUserProfile } from "../firebase/auth"
 
+// TODO: Add friends view and Games
+
 function Home() {
     const { currentUser, userLoggedIn } = useAuth()
     const [username, setUsername] = useState("")

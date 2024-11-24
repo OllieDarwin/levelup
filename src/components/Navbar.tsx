@@ -3,7 +3,7 @@ import levelup from "../assets/images/levelup.svg"
 import levelupicon from "../assets/images/levelup-icon.svg"
 import { useEffect, useState } from "react"
 import { useAuth } from "../contexts/authContext"
-import { doSignOut } from "../firebase/auth"
+import { doSignOut, fetchUserProfile } from "../firebase/auth"
 
 interface Props {
     showNav: boolean
@@ -16,8 +16,23 @@ function Navbar({ showNav }: Props) {
         setUrl(location.pathname)
     }, [location])
 
-    const { userLoggedIn } = useAuth()
     const navigate = useNavigate()
+
+    const { currentUser, userLoggedIn } = useAuth()
+    const [username, setUsername] = useState("")
+
+    useEffect(() => {
+        const loadUserProfile = async () => {
+            if (currentUser) {
+                const profile = await fetchUserProfile(currentUser.uid)
+                if (profile && profile.username) {
+                    setUsername(profile.username)
+                }
+            }
+        }
+
+        loadUserProfile()
+    }, [userLoggedIn])
 
     return (
         <>
@@ -48,9 +63,11 @@ function Navbar({ showNav }: Props) {
                                         <svg className={"feather feather-home size-6 " + (url.split("/")[1] === "games" ? "stroke-[--p]" : "stroke-white")} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                                     </div>
                                 </Link> 
-                                <div className="btn join-item px-6 border-none">
-                                    <svg className="feather feather-home stroke-white size-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                </div>
+                                <Link to={"/profile/" + username}>
+                                    <div className="btn join-item px-6 border-none">
+                                        <svg className={"feather feather-home size-6 " + (url.split("/")[1] == "profile" && url.split("/")[2] == username ? "stroke-[--p]" : "stroke-white")} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    </div>
+                                </Link>
                                 <div className="btn join-item px-6 border-none">
                                     <svg className="feather feather-home stroke-white size-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                                 </div>
@@ -80,7 +97,7 @@ function Navbar({ showNav }: Props) {
                                     <div className="rounded-full px-3 py-1 w-14">
                                     </div>
                                 }
-                                {url == "/profile" ?
+                                {url.split("/")[1] == "profile" && url.split("/")[2] == username ?
                                     <div className="rounded-full px-3 py-1 bg-[--btn-color] w-14">
                                         <p className="text-[0.6rem] text-center">Profile</p>
                                     </div>
@@ -142,12 +159,14 @@ function Navbar({ showNav }: Props) {
                             </Link>
                             <Link to="/games">
                                 <div className="btn join-item px-6 border-none">
-                                    <svg className={"feather feather-home stroke-white size-6" + (url.split("/")[1] === "games" ? "stroke-[--p]" : "stroke-white")} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                    <svg className={"feather feather-home stroke-white size-6 " + (url.split("/")[1] === "games" ? "stroke-[--p]" : "stroke-white")} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                                 </div>
                             </Link> 
-                            <div className="btn join-item px-6 border-none">
-                                <svg className="feather feather-home stroke-white size-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                            </div>
+                            <Link to={"/profile/" + username}>
+                                <div className="btn join-item px-6 border-none">
+                                    <svg className={"feather feather-home size-6 " + (url.split("/")[1] == "profile" && url.split("/")[2] == username ? "stroke-[--p]" : "stroke-white")} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                </div>
+                            </Link>
                             <div className="btn join-item px-6 border-none">
                                 <svg className="feather feather-home stroke-white size-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" ><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                             </div>

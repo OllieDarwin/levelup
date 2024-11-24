@@ -1,47 +1,27 @@
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import "./index.css"
-import About from './pages/About'
+import Alerts from './pages/Alerts'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import { AuthProvider } from './contexts/authContext'
 import Quiz from './pages/games/Quiz'
 import Games from './pages/Games'
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Navigate to="/home" />
-  },
-  {
-    path: "/home",
-    element: <Home />
-  },
-  {
-    path: "/about",
-    element: <About />
-  },
-  {
-    path: "/login",
-    element: <Login />
-  },
-  {
-    path: "/signup",
-    element: <SignUp />
-  },
-  {
-    path: "/games",
-    element: <Games />
-  },
-  {
-    path: "/games/quiz",
-    element: <Quiz />
-  }
-])
+import Profile from './pages/Profile'
 
 createRoot(document.getElementById('root')!).render(
   <AuthProvider>
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/about" element={<Alerts />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/games" element={<Games />} />
+        <Route path="/games/quiz" element={<Quiz />} />
+        <Route path="/profile/:username" element={<Profile />} />
+      </Routes>
+    </BrowserRouter> 
   </AuthProvider>
 )
