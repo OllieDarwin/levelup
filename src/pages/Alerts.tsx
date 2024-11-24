@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar"
 import { useAuth } from "../contexts/authContext"
 import BodyCard from "../components/BodyCard"
 import { useEffect, useState } from "react"
-import { acceptFriendRequest, getFriendRequests, getUserIconFromID, ignoreFriendRequest } from "../firebase/auth"
+import { acceptFriendRequest, getFriendRequests, ignoreFriendRequest } from "../firebase/auth"
 import { Timestamp } from "firebase/firestore"
 
 function Alerts() {
