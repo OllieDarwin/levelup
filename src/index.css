@@ -19,7 +19,7 @@
 }
 
 body {
-  background: url("./assets/images/grunge.png") repeat-y center center fixed;
+  background: url("/images/grunge.png") repeat-y center center fixed;
   background-size: cover;
 }
 

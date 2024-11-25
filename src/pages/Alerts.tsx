@@ -41,7 +41,7 @@ function Alerts() {
                             {request.status === "received" && 
                                 <>
                                     <div className="bg-[--b1] flex rounded-2xl py-4 mx-8">
-                                        <img className="size-24 bg-white rounded-full mx-8 my-auto" src={request.iconURL || "/src/assets/user-icons/1.png"} alt="User icon" />
+                                        <img className="size-24 bg-white rounded-full mx-8 my-auto" src={window.location.origin + (request.iconURL || "/user-icons/1.png")} alt="User icon" />
                                         <div>
                                             <h1 className="font-bold text-lg">{request.friendName} has added you as a friend.</h1>
                                             <h2 className="text-[#CACACA] mb-4">Would you like to accept?</h2>

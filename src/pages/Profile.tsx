@@ -72,10 +72,10 @@ function Profile() {
                     <div className="card card-compact bg-[--b1] w-[50%] mx-auto flex items-center my-auto pb-8">
                         { currentUsername === username ?
                             <>
-                                <img className="size-32 bg-white rounded-full translate-y-[-50%] mb-[-3rem]" src={profile.iconURL || "/src/assets/user-icons/1.png"} alt="User icon" />
+                                <img className="size-32 bg-white rounded-full translate-y-[-50%] mb-[-3rem]" src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} alt="User icon" />
                             </>
                             :
-                            <img className="size-32 bg-white rounded-full translate-y-[-50%] mb-[-3rem]" src={profile.iconURL || "/src/assets/user-icons/1.png"} alt="User icon" />
+                            <img className="size-32 bg-white rounded-full translate-y-[-50%] mb-[-3rem]" src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} alt="User icon" />
                         }
                         <h1 className="text-2xl font-bold">{username}</h1>
                         <p className="text-[#CACACA]">Rank #{rank}</p>

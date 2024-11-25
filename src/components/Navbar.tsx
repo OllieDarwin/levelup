@@ -1,6 +1,4 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import levelup from "../assets/images/levelup.svg"
-import levelupicon from "../assets/images/levelup-icon.svg"
 import { useEffect, useState } from "react"
 import { useAuth } from "../contexts/authContext"
 import { doSignOut, fetchUserProfile } from "../firebase/auth"
@@ -40,7 +38,7 @@ function Navbar({ showNav }: Props) {
             <div className="navbar px-[3%] h-[6.05rem] max-md:hidden flex">
                 <div className="navbar-start mb-auto mt-2">
                     <Link to="/">
-                        <img className="h-16" src={levelup} alt="LevelUp" />
+                        <img className="h-16" src={window.location.origin + "/images/levelup.svg"} alt="LevelUp" />
                     </Link>
                 </div>
                 {showNav && 
@@ -140,7 +138,7 @@ function Navbar({ showNav }: Props) {
                 <div className="navbar-start">
                     <div className="navbar-start mb-auto mt-2">
                         <Link to="/">
-                            <img className="h-8 mt-2 ml-5" src={levelupicon} alt="LevelUp" />
+                            <img className="h-8 mt-2 ml-5" src={window.location.origin + "/images/levelup-icon.svg"} alt="LevelUp" />
                         </Link>
                     </div>
                 </div>

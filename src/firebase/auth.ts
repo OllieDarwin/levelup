@@ -21,7 +21,7 @@ const defaultUserProfile: UserProfile = {
     username: "",
     email: "",
     xp: 0,
-    iconURL: `/src/assets/user-icons/${Math.floor(Math.random()*7)+1}.png`
+    iconURL: `/user-icons/${Math.floor(Math.random()*7)+1}.png`
 }
 
 export const doCreateUserWithEmailAndPassword = async (email: string, password: string) => {
