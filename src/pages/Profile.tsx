@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Navigate, useParams } from "react-router-dom"
-import { fetchUserProfile, getUserProfileByUsername, getUserXPRankByID, sendFriendRequest } from "../firebase/auth"
+import { acceptFriendRequest, fetchUserProfile, getUserProfileByUsername, getUserRelationship, getUserXPRankByID, sendFriendRequest } from "../firebase/auth"
 import Navbar from "../components/Navbar"
 import BodyCard from "../components/BodyCard"
 import { useAuth } from "../contexts/authContext"
@@ -15,6 +15,9 @@ function Profile() {
     const [rank, setRank] = useState<number>()
 
     const [currentUsername, setCurrentUsername] = useState("")
+
+    const [userRelationship, setUserRelationship] = useState<"none" | "pending" | "received" | "friends">()
+    const [buttonElement, setButtonElement] = useState(<></>)
 
     // Get data for user profile
     useEffect(() => {
@@ -49,6 +52,51 @@ function Profile() {
         loadUserProfile()
     }, [userLoggedIn])
 
+    const loadUserRelationship = async () => {
+        if (currentUser && profile !== null) {
+            const relationship = await getUserRelationship(currentUser.uid, profile.id)
+            setUserRelationship(relationship) // Update state
+        }
+    }
+
+    useEffect(() => {
+        loadUserRelationship()
+    }, [currentUser, profile])
+    
+    // Watch for changes to userRelationship to update the button state
+    useEffect(() => {
+        const updateButtonState = () => {
+            console.log(userRelationship)
+            if (!currentUser) {
+                setButtonElement(<></>)
+                return
+            }
+            if (username === currentUsername) {
+                setButtonElement(<></>)
+                return
+            }
+            if (userRelationship === "none") {
+                setButtonElement(<div className="btn border-none bg-[--p]" onClick={addFriend}>Add as friend</div>)
+                return
+            } else if (userRelationship === "friends") {
+                setButtonElement(<div className="btn border-none bg-[--btn-color]">Friends</div>)
+                return
+            } else if (userRelationship === "pending") {
+                setButtonElement(<div className="btn border-none bg-[--btn-color]">Friend request sent</div>)
+                return
+            } else if (userRelationship === "received") {
+                setButtonElement(<div className="btn border-none bg-[--p]" onClick={() => acceptFriendRequest(currentUser?.uid, profile.id)}>Accept friend request</div>)
+                return
+            }
+        };
+    
+        if (userRelationship) {
+            loadUserRelationship()
+            updateButtonState()
+        }
+    }, [userRelationship, currentUser, username, currentUsername, profile]);
+    
+
     const addFriend = async () => {
         if(!currentUser) throw console.error("Error adding friend: no user found")
         await sendFriendRequest(currentUser.uid, profile.id)
@@ -69,17 +117,11 @@ function Profile() {
                 </> 
                 :
                 <>
-                    <div className="card card-compact bg-[--b1] w-[50%] mx-auto flex items-center my-auto pb-8">
-                        { currentUsername === username ?
-                            <>
-                                <img className="size-32 bg-white rounded-full translate-y-[-50%] mb-[-3rem]" src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} alt="User icon" />
-                            </>
-                            :
-                            <img className="size-32 bg-white rounded-full translate-y-[-50%] mb-[-3rem]" src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} alt="User icon" />
-                        }
+                    <div className="card card-compact bg-[--b1] w-[50%] mx-auto flex items-center my-auto pb-8">s
+                        <img className="size-32 bg-white rounded-full translate-y-[-50%] mb-[-3rem]" src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} alt="User icon" />
                         <h1 className="text-2xl font-bold">{username}</h1>
-                        <p className="text-[#CACACA]">Rank #{rank}</p>
-                        { username !== currentUsername && <div className="btn border-none bg-[--p]" onClick={addFriend}>Add as friend</div> }
+                        <p className="text-[#CACACA] mb-4">Rank #{rank}</p>
+                        { buttonElement }
                     </div>
                 </>
                 }

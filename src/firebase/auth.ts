@@ -255,3 +255,31 @@ export const getUserIconFromID = async (userID: string) => {
         throw error
     }
 }
+
+export const getUserRelationship = async (userID: string, friendID: string) => {
+    if (!userID || !friendID) {
+        console.error("Invalid userID or friendID provided:", { userID, friendID });
+        throw new Error("Invalid userID or friendID");
+    }
+
+    try {
+        const userFriendRequestsRef = doc(db, "users", userID, "friendRequests", friendID);
+        const userFriendRequestSnapshot = await getDoc(userFriendRequestsRef);
+
+        const userFriendsRef = doc(db, "users", userID, "friends", friendID);
+        const userFriendSnapshot = await getDoc(userFriendsRef);
+
+        if (userFriendRequestSnapshot.exists()) {
+            const status = userFriendRequestSnapshot.data()?.status;
+            if (status === "pending") return "pending";
+            if (status === "received") return "received";
+        } else if (userFriendSnapshot.exists()) {
+            return "friends";
+        }
+
+        return "none";
+    } catch (error) {
+        console.error("Error establishing user relationship", error);
+        throw error;
+    }
+}
