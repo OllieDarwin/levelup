@@ -9,6 +9,7 @@ import { AuthProvider } from './contexts/authContext'
 import Quiz from './pages/games/Quiz'
 import Games from './pages/Games'
 import Profile from './pages/Profile'
+import Settings from './pages/Settings'
 
 createRoot(document.getElementById('root')!).render(
   <AuthProvider>
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/games" element={<Games />} />
         <Route path="/games/quiz" element={<Quiz />} />
         <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter> 
   </AuthProvider>

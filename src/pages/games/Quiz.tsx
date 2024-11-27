@@ -159,23 +159,23 @@ function Quiz() {
                             </div>
                         </div>
                         {/* Text area & solution area */}
-                        <div className="flex w-[50%] mx-auto gap-4 h-48">
-                            <textarea name="solution" id="solution" className={(solution !== null ? "w-1/2" : "w-full") + " textarea mt-8"} value={textAreaText} placeholder="Write your solution here" onChange={(e) => {
+                        <div className="flex w-[50%] mx-auto gap-4 min-h-36 mb-8">
+                            <textarea name="solution" id="solution" className={(solution !== null ? "w-1/3" : "w-full") + " textarea mt-8 h-full"} value={textAreaText} placeholder="Write your solution here" onChange={(e) => {
                                 setUserSolution(e.target.value)
                                 setTextAreaText(e.target.value)
                             }}></textarea>
                             {solution !== null &&
                             <>
-                                <div className="card card-compact mt-8 bg-[--b1] w-1/2 h-48">
-                                    <div className="card-body">
+                                <div className="card card-compact mt-8 bg-[--b1] w-2/3 min-h-full">
+                                    <div className="card-body flex-none">
                                         <h2 className="card-title">Solution:</h2>
                                         { solution.correct ? 
                                         <>
-                                            <p className="text-green-500">Correct! ✔</p>
+                                            <p className="text-green-500 mb-0">Correct! ✔</p>
                                         </>
                                         :
                                         <>
-                                            <p className="text-red-500">Incorrect. ✘</p>
+                                            <p className="text-red-500 mb-0">Incorrect. ✘</p>
                                         </>
                                         }
                                         <p>{solution.response}</p>

@@ -28,13 +28,13 @@ export async function generateQuestion() {
         The description is a brief, concise description of the topic and a small hint on how the question may be solved.
 
         Generate a question now:
-      `;
+      `
       
       const response = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [{ role: "user", content: prompt }],
         max_tokens: 300,
-        temperature: 1.4,
+        temperature: 1.5,
         response_format: {
             type: 'json_schema',
             json_schema: {
@@ -49,18 +49,20 @@ export async function generateQuestion() {
                 }
             }
         }
-      });
+      })
+
+      console.log(response)
   
       if (response.choices[0].message.content === null) {
         throw "No response found"
       }
       const question = JSON.parse(response.choices[0].message.content)
-      if (!question) throw new Error("Failed to generate question");
+      if (!question) throw new Error("Failed to generate question")
   
-      return question;
+      return question
     } catch (error) {
-      console.error("Error generating question:", error);
-      throw error;
+      console.error("Error generating question:", error)
+      throw error
     }
   };
 
@@ -71,14 +73,17 @@ export async function getSolution(question: string, userSolution: string) {
         Here is a GCSE Maths question: "${question}"
         A student has provided this solution: "${userSolution}"
         Determine if the student's solution is correct or incorrect, and explain why in clear and concise terms.
+        I do not care about the units given or how much working is shown: if the correct answer to the question can be found anywhere in their solution then say correct = true.
+
+        Do not try to include any formatting in your response as I cannot display it.
 
         You will have to respond in a JSON schema with the following keys:
         correct: determine if the user was correct or incorrect and return a corresponding boolean value
         response: here is where your clear and concise feedback should go
-      `;
+      `
   
       const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
+        model: "gpt-4o",
         messages: [{ role: "user", content: prompt }],
         max_tokens: 150,
         response_format: {
@@ -94,18 +99,20 @@ export async function getSolution(question: string, userSolution: string) {
                 }
             }
         }
-      });
+      })
+
+      console.log(response)
   
       if (response.choices[0].message.content === null) {
         throw "No response found"
       }
       const feedback = JSON.parse(response.choices[0].message.content)
-      if (!feedback) throw new Error("Failed to generate feedback");
+      if (!feedback) throw new Error("Failed to generate feedback")
   
-      return feedback;
+      return feedback
     } catch (error) {
       console.error("Error evaluating solution:", error);
-      throw error;
+      throw error
     }
   };
   

@@ -12,12 +12,6 @@
   --warning: #EC5657;
 }
 
-@layer base {
-    html {
-      font-family: "Inter", system-ui, sans-serif;
-    }
-}
-
 body {
   background: url("/images/grunge.png") repeat-y center center fixed;
   background-size: cover;
@@ -26,4 +20,12 @@ body {
 svg:hover {
   opacity: 0.8;
   transition: opacity 0.1s ease-in-out;
+}
+
+.dyslexia {
+  font-family: "Lexend", system-ui, sans-serif;
+}
+
+.default-font {
+  font-family: "Inter", system-ui, sans-serif;
 }
