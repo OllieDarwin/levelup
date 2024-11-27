@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import "./index.css"
 import Alerts from './pages/Alerts'
@@ -14,6 +14,7 @@ createRoot(document.getElementById('root')!).render(
   <AuthProvider>
     <BrowserRouter>
       <Routes>
+      <Route path="/" element={<Navigate to="/home"></Navigate>} />
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<Alerts />} />
         <Route path="/login" element={<Login />} />

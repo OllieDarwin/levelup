@@ -169,17 +169,40 @@ export const sendFriendRequest = async (userID: string, friendID: string) => {
 
 export const getFriendRequests = async (userID: string) => {
     try {
-        const friendRequestsRef = collection(db, "users", userID, "friendRequests")
-        const friendRequestsQuery = query(friendRequestsRef, orderBy("sentAt", "desc"))
-        const querySnapshot = await getDocs(friendRequestsQuery)
-        const friendRequests = querySnapshot.docs.map((doc) => ({
-            ...doc.data()
-        })) as {friendID: string, friendName: string, sentAt: Timestamp, status: "pending" | "received", iconURL: string}[]
+        const friendRequestsRef = collection(db, "users", userID, "friendRequests");
+        const friendRequestsQuery = query(friendRequestsRef, orderBy("sentAt", "desc"));
+        const querySnapshot = await getDocs(friendRequestsQuery);
 
-        return friendRequests
+        // Map the friend requests and fetch the iconURL for each friendID
+        const friendRequests = await Promise.all(
+            querySnapshot.docs.map(async (docSnapshot) => {
+                const requestData = docSnapshot.data() as {friendID: string, friendName: string, sentAt: Timestamp, status: "pending" | "received"};
+
+                // Fetch the iconURL from the friend's profile document
+                let iconURL = "/user-icons/default.png" // Fallback icon
+                try {
+                    const friendProfileRef = doc(db, "users", requestData.friendID)
+                    const friendProfileSnapshot = await getDoc(friendProfileRef)
+
+                    if (friendProfileSnapshot.exists()) {
+                        const friendProfileData = friendProfileSnapshot.data()
+                        iconURL = friendProfileData.iconURL || iconURL // Use friend's iconURL if it exists
+                    }
+                } catch (error) {
+                    console.error(`Error fetching profile for friendID: ${requestData.friendID}`, error)
+                }
+
+                return {
+                    ...requestData,
+                    iconURL,
+                };
+            })
+        );
+
+        return friendRequests;
     } catch (error) {
-        console.error("Error fetching friend requests:", error)
-        throw error
+        console.error("Error fetching friend requests:", error);
+        throw error;
     }
 }
 
