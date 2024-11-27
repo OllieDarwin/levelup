@@ -1,51 +1,50 @@
-# React + TypeScript + Vite
+# LevelUp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**LevelUp** is an adaptive educational tool which harnesses the power of artificial intelligence to produce personalised learning experience, eradicating commonly faced problems in education such as the one-size-fits-all approach. If you would like to try LevelUp, visit https://levelup.olliedarwin.me .
 
-Currently, two official plugins are available:
+## About the Project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is part of the **Inversity Team Challenge #3**, titled *"How can AI make education more engaging, effective, and equitable?"*. The challenge, running from November 10th to December 1st, explores innovative AI solutions to transform education, supported by Rehana Al-Soltane, AI Learning Manager at the Raspberry Pi Foundation. It emphasizes collaboration, creativity, and impactful AI applications.
 
-## Expanding the ESLint configuration
+Sponsored by [Faculty](https://faculty.ai), one of Europe's leading AI companies, this challenge invites teams of 3-5 to contribute ideas that can positively reshape education through responsible AI use.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Features
 
-- Configure the top-level `parserOptions` property like this:
+- **React with TypeScript**: Fully set up for modern, type-safe development.
+- **Node.js backend**: Fast and efficient backend built with node.
+- **Firebase integration**: Firebase & firestore used for user authentication and storage of user data.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Getting Started
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+I do **not** recommend trying to install this for yourself. You will not have the relevant database setup. If you would like to try the project, visit [**LevelUp**](https://levelup.olliedarwin.me).
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Prerequisites
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
-"# levelup" 
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/OllieDarwin/levelup.git
+   cd levelup
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+3. Rename `.env.example` to `.env` and enter the relevant information from your firebase project and OpenAI.
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   The app will be accessible at `http://localhost:3000`.
