@@ -50,8 +50,6 @@ export async function generateQuestion() {
             }
         }
       })
-
-      console.log(response)
   
       if (response.choices[0].message.content === null) {
         throw "No response found"
@@ -100,8 +98,6 @@ export async function getSolution(question: string, userSolution: string) {
             }
         }
       })
-
-      console.log(response)
   
       if (response.choices[0].message.content === null) {
         throw "No response found"

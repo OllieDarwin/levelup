@@ -169,17 +169,17 @@ export const sendFriendRequest = async (userID: string, friendID: string) => {
 
 export const getFriendRequests = async (userID: string) => {
     try {
-        const friendRequestsRef = collection(db, "users", userID, "friendRequests");
-        const friendRequestsQuery = query(friendRequestsRef, orderBy("sentAt", "desc"));
-        const querySnapshot = await getDocs(friendRequestsQuery);
+        const friendRequestsRef = collection(db, "users", userID, "friendRequests")
+        const friendRequestsQuery = query(friendRequestsRef, orderBy("sentAt", "desc"))
+        const querySnapshot = await getDocs(friendRequestsQuery)
 
         // Map the friend requests and fetch the iconURL for each friendID
         const friendRequests = await Promise.all(
             querySnapshot.docs.map(async (docSnapshot) => {
-                const requestData = docSnapshot.data() as {friendID: string, friendName: string, sentAt: Timestamp, status: "pending" | "received"};
+                const requestData = docSnapshot.data() as {friendID: string, friendName: string, sentAt: Timestamp, status: "pending" | "received"}
 
                 // Fetch the iconURL from the friend's profile document
-                let iconURL = "/user-icons/default.png" // Fallback icon
+                let iconURL = "/user-icons/1.png" // Fallback icon
                 try {
                     const friendProfileRef = doc(db, "users", requestData.friendID)
                     const friendProfileSnapshot = await getDoc(friendProfileRef)
@@ -195,14 +195,14 @@ export const getFriendRequests = async (userID: string) => {
                 return {
                     ...requestData,
                     iconURL,
-                };
+                }
             })
-        );
+        )
 
-        return friendRequests;
+        return friendRequests
     } catch (error) {
-        console.error("Error fetching friend requests:", error);
-        throw error;
+        console.error("Error fetching friend requests:", error)
+        throw error
     }
 }
 
@@ -281,28 +281,79 @@ export const getUserIconFromID = async (userID: string) => {
 
 export const getUserRelationship = async (userID: string, friendID: string) => {
     if (!userID || !friendID) {
-        console.error("Invalid userID or friendID provided:", { userID, friendID });
-        throw new Error("Invalid userID or friendID");
+        console.error("Invalid userID or friendID provided:", { userID, friendID })
+        throw new Error("Invalid userID or friendID")
     }
 
     try {
-        const userFriendRequestsRef = doc(db, "users", userID, "friendRequests", friendID);
-        const userFriendRequestSnapshot = await getDoc(userFriendRequestsRef);
+        const userFriendRequestsRef = doc(db, "users", userID, "friendRequests", friendID)
+        const userFriendRequestSnapshot = await getDoc(userFriendRequestsRef)
 
-        const userFriendsRef = doc(db, "users", userID, "friends", friendID);
-        const userFriendSnapshot = await getDoc(userFriendsRef);
+        const userFriendsRef = doc(db, "users", userID, "friends", friendID)
+        const userFriendSnapshot = await getDoc(userFriendsRef)
 
         if (userFriendRequestSnapshot.exists()) {
             const status = userFriendRequestSnapshot.data()?.status;
-            if (status === "pending") return "pending";
-            if (status === "received") return "received";
+            if (status === "pending") return "pending"
+            if (status === "received") return "received"
         } else if (userFriendSnapshot.exists()) {
-            return "friends";
+            return "friends"
         }
 
-        return "none";
+        return "none"
     } catch (error) {
-        console.error("Error establishing user relationship", error);
-        throw error;
+        console.error("Error establishing user relationship", error)
+        throw error
+    }
+}
+
+export const getTopFriends = async (userID: string) => {
+    try {
+        const friendsRef = collection(db, "users", userID, "friends")
+        const friendsQuery = query(friendsRef, limit(8))
+        const querySnapshot = await getDocs(friendsQuery)
+
+        console.log("Number of friends found:", querySnapshot.size)
+
+        // Map the friends and fetch the data for each friendID
+        const friends = await Promise.all(
+            
+            querySnapshot.docs.map(async (docSnapshot) => {
+                const requestData = docSnapshot.data() as {friendID: string}
+
+                try {
+                    const friendProfileRef = doc(db, "users", requestData.friendID)
+                    const friendProfileSnapshot = await getDoc(friendProfileRef)
+
+                    if (friendProfileSnapshot.exists()) {
+                        const friendProfileData = friendProfileSnapshot.data()
+                        return {
+                            friendID: requestData.friendID,
+                            username: friendProfileData.username || "Unknown",
+                            iconURL: friendProfileData.iconURL || "/user-icons/1.png",
+                        }
+                    } else {
+                        console.warn(`Profile not found for friendID: ${requestData.friendID}`)
+                        return {
+                            friendID: requestData.friendID,
+                            username: "Unknown",
+                            iconURL: "/user-icons/1.png",
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Error fetching profile for friendID: ${requestData.friendID}`, error)
+                    return {
+                        friendID: requestData.friendID,
+                        username: "Unknown",
+                        iconURL: "/user-icons/1.png",
+                    }
+                }
+            })
+        )
+
+        return friends
+    } catch (error) {
+        console.error("Error fetching top friends:", error)
+        throw error
     }
 }

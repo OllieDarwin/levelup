@@ -68,7 +68,7 @@ function Alerts() {
                     : (receivedRequests.map((request) => (
                             <div key={request.friendID} className="bg-[--b1] flex rounded-2xl py-4 mx-8 mb-2">
                                 <Link className="mx-8 my-auto"to={`/profile/${request.friendName}`}>
-                                    <img className="size-24 bg-white rounded-full"src={window.location.origin + (request.iconURL || "/user-icons/1.png")} alt="User icon"/>
+                                    <img className="size-24 bg-[--b1] rounded-full"src={window.location.origin + (request.iconURL || "/user-icons/1.png")} alt="User icon"/>
                                 </Link>
                                 <div>
                                     <h1 className="font-bold text-lg">

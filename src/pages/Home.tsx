@@ -3,7 +3,8 @@ import Navbar from "../components/Navbar"
 import { useEffect, useState } from "react"
 import { useAuth } from "../contexts/authContext"
 import BodyCard from "../components/BodyCard"
-import { fetchUserProfile } from "../firebase/auth"
+import { fetchUserProfile, getTopFriends } from "../firebase/auth"
+import Friends from "../components/Friends"
 
 // TODO: Add friends view and Games
 
@@ -11,6 +12,7 @@ function Home() {
     const { currentUser, userLoggedIn } = useAuth()
     const [username, setUsername] = useState("")
     const [loading, setLoading] = useState(true)
+    const [friends, setFriends] = useState<{ iconURL: string; username: string; friendID: string; }[]>([])
 
     useEffect(() => {
         const loadUserProfile = async () => {
@@ -19,13 +21,29 @@ function Home() {
                 if (profile && profile.username) {
                     setUsername(profile.username)
                     setLoading(false)
-                    console.log(profile.xp)
                 }
             }
         }
 
         loadUserProfile()
     }, [userLoggedIn])
+
+    const loadTopFriends = async () => {
+        if (currentUser) {
+            try {
+                const topFriends = await getTopFriends(currentUser.uid)
+                setFriends(topFriends)
+            } catch (error) {
+                console.error("Error loading top friends:", error)
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (currentUser) {
+            loadTopFriends()
+        }
+    }, [currentUser])
 
     return (
         <>
@@ -42,8 +60,14 @@ function Home() {
                     </> 
                     :
                     <>
-                        <h1 className="font-semibold text-center mt-24 text-4xl">Welcome to <span className="text-[--p]">LevelUp</span>!</h1>
-                        {username && <h1 className="font-normal text-[#CACACA] text-center mt-8 text-xl">Welcome back, {username || "LOADING"}. Feel free to scroll and see what we’re about and play some games!</h1>}
+                        <div className="mx-8 h-full">
+                            <h1 className="font-semibold text-center mt-24 text-4xl">Welcome to <span className="text-[--p]">LevelUp</span>!</h1>
+                            {username && <h2 className="font-normal text-[#CACACA] text-center mt-8 text-xl">Welcome back, {username || "LOADING"}. Feel free to scroll and see what we’re about and play some games!</h2>}
+                            <div className="mx-24">
+                                <h3 className="font-semibold text-xl mt-8 mx-4 mb-4">Friends</h3>
+                                <Friends data={friends} />
+                            </div>
+                        </div>
                     </>
                     }
                 </BodyCard>

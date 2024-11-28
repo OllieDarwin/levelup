@@ -118,7 +118,7 @@ function Profile() {
                 :
                 <>
                     <div className="card card-compact bg-[--b1] w-[50%] mx-auto flex items-center my-auto pb-8">
-                        <img className="size-32 bg-white rounded-full translate-y-[-50%] mb-[-3rem]" src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} alt="User icon" />
+                        <img className="size-32 bg-[--b1] rounded-full translate-y-[-50%] mb-[-3rem]" src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} alt="User icon" />
                         <h1 className="text-2xl font-bold">{username}</h1>
                         <p className="text-[#CACACA] mb-4">Rank #{rank}</p>
                         { buttonElement }
