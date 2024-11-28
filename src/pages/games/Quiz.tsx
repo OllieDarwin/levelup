@@ -7,12 +7,6 @@ import { useEffect, useState } from "react"
 import { generateQuestion, getSolution } from "../../services/aiService"
 import { fetchUserProfile, saveUserProfile } from "../../firebase/auth"
 
-const defaultQuestion = {
-    "question": "What is 40% of 120?",
-    "title": "Calculating Percentages",
-    "description": "This question tests your ability to calculate percentages. To find 40% of a number, you can use the following method: first convert the percentage to a fraction by dividing it by 100, so 40% becomes 0.40. Then multiply this by the total number which is 120 in this case."
-}
-
 function Quiz() {
 
     // User state
@@ -33,23 +27,25 @@ function Quiz() {
     }, [userLoggedIn])
 
     // Current question state
-    const [question, setQuestion] = useState<{ question: string, title: string, description: string }>(defaultQuestion)
+    const [question, setQuestion] = useState<{ question: string, title: string, description: string }>({question: "", title: "", description: ""})
     const [userSolution, setUserSolution] = useState("")
+    const [loadingSolution, setLoadingSolution] = useState(false)
     const [solution, setSolution] = useState<null | { correct: boolean, response: string }>(null)
     const [textAreaText, setTextAreaText] = useState("")
     const [loadingQuestion, setLoadingQuestion] = useState(true)
 
     // Overall game state
     const [playing, setPlaying] = useState(false)
-    const [leftoverTime, setLeftoverTime] = useState(180)
+    const [leftoverTime, setLeftoverTime] = useState(60)
     const [score, setScore] = useState(0)
     const [showScore, setShowScore] = useState(false)
     const [gameEnded, setGameEnded] = useState(false)
+    const [timeTicking, setTimeTicking] = useState(true)
 
     // Timer
     useEffect(() => {
         let timer: NodeJS.Timeout
-        if (playing && leftoverTime > 0) {
+        if (playing && leftoverTime > 0 && timeTicking) {
             timer = setInterval(() => {
                 setLeftoverTime((t) => t - 1)
             }, 1000);
@@ -57,7 +53,7 @@ function Quiz() {
             endGame()
         }
         return () => clearInterval(timer);
-    }, [playing, leftoverTime]);
+    }, [playing, leftoverTime, timeTicking]);
 
 
     const startGame = () => {
@@ -81,22 +77,50 @@ function Quiz() {
     }
 
     const handleSubmit = async () => {
-        const solution = await getSolution(question?.question, userSolution)
-        setSolution(solution)
-        if(solution.correct) {
-            setScore((currentScore) => currentScore + 5000)
+        setTimeTicking(false)
+        setLoadingSolution(true)
+        let retries = 3
+        let solutionResponse = null
+    
+        while (retries > 0) {
+            try {
+                const solution = await getSolution(question?.question, userSolution)
+                solutionResponse = solution // Store the solution if successful
+                break // Exit the loop on success
+            } catch (error) {
+                console.error(`Attempt failed. Retries left: ${retries - 1}`, error)
+                retries--
+                if (retries === 0) {
+                    setSolution({
+                        correct: false,
+                        response: "An error occurred while processing your solution. Please try again later.",
+                    });
+                    setLoadingSolution(false)
+                    return // Exit the function after displaying the error
+                }
+            }
         }
-    }
+    
+        setSolution(solutionResponse) // Set the solution if successful
+        setLoadingSolution(false)
+    
+        // Increment score if correct
+        if (solutionResponse?.correct) {
+            setScore((currentScore) => currentScore + 5000);
+        }
+    };
+    
 
     const handleNextQuestion = () => {
         loadQuestion()
         setTextAreaText("")
         setSolution(null)
+        setTimeTicking(true)
     }
 
     useEffect(() => {
-        // loadQuestion()
-        setLoadingQuestion(false)
+        loadQuestion()
+        // setLoadingQuestion(false)
     }, [])
 
     return (
@@ -138,7 +162,7 @@ function Quiz() {
                     {/* Main game question */}
                     <div className={(!playing && "blur-sm pointer-events-none") + " flex flex-col items-center my-auto"}>
                         {/* Question display */}
-                        <div className="card card-compact bg-[--btn-color] w-[50%] shadow-xl mx-auto mt-16">
+                        <div className="card card-compact bg-[--btn-color] w-[50%] shadow-xl mx-auto">
                             <figure className="bg-[--b1] h-36 px-16 text-center">
                                 {loadingQuestion === true ?
                                 <span className="loading loading-infinity loading-lg"></span>
@@ -169,26 +193,27 @@ function Quiz() {
                                 <div className="card card-compact mt-8 bg-[--b1] w-2/3 min-h-full">
                                     <div className="card-body flex-none">
                                         <h2 className="card-title">Solution:</h2>
-                                        { solution.correct ? 
+                                        {loadingSolution ? 
+                                            <span className="loading loading-infinity loading-lg"></span>
+                                        : 
                                         <>
-                                            <p className="text-green-500 mb-0">Correct! ✔</p>
-                                        </>
-                                        :
-                                        <>
-                                            <p className="text-red-500 mb-0">Incorrect. ✘</p>
-                                        </>
-                                        }
-                                        <p>{solution.response}</p>
+                                            { solution.correct ? <p className="text-green-500 mb-0">Correct! ✔</p> : <p className="text-red-500 mb-0">Incorrect. ✘</p> }
+                                            <p>{solution.response}</p>
+                                        </>}
                                     </div>
                                 </div>
                             </>
                             }
                         </div>
                         {/* Action button */}
-                        {solution === null ?
-                        <button className="btn rounded-full bg-[--p] border-none w-[50%] mt-4 mx-auto" type="submit" onClick={handleSubmit}>Mark Solution</button>
-                        :
-                        <button className="btn rounded-full bg-[--p] border-none w-[50%] mt-4 mx-auto" type="submit" onClick={handleNextQuestion}>Next Question</button>
+                        {
+                            loadingSolution ?
+                                <button className="btn rounded-full bg-[--p] border-none w-[50%] mt-4 mx-auto" type="submit"><span className="loading loading-infinity loading-lg"></span></button>
+                            : (solution === null ?
+                                <button className="btn rounded-full bg-[--p] border-none w-[50%] mt-4 mx-auto" type="submit" onClick={handleSubmit}>Mark Solution</button>
+                            :
+                                <button className="btn rounded-full bg-[--p] border-none w-[50%] mt-4 mx-auto" type="submit" onClick={handleNextQuestion}>Next Question</button>
+                            )
                         }
                     </div>
                 </BodyCard>
