@@ -5,56 +5,38 @@ import BodyCard from "../components/BodyCard"
 
 import Leaderboard from "../components/Leaderboard"
 
-function About() {
+function Games() {
     const { userLoggedIn } = useAuth()
     
     return (
         <>
-            {!userLoggedIn && (<Navigate to="/login" />) }
+            {!userLoggedIn && <Navigate to="/login" />}
 
-            <div className="min-h-screen h-screen">
+            <div className="min-h-screen">
                 <Navbar showNav={true}></Navbar>
                 <BodyCard>
-                    <div className="flex mx-8 h-full my-auto">
-                        <div className="grid grid-cols-2 mx-8 my-auto h-[90%] gap-8 w-full">
-                            <Link to="/games/quiz">
-                                <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
-                                    <figure>
-                                    </figure>
-                                    <div className="card-content py-6">
-                                        <h1 className="card-title">Maths Quiz</h1>
+                    <div className="p-4 block mt-8 max-md:mt-0">
+                        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 h-full">
+                            {/* Games Section */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <Link to="/games/quiz">
+                                    <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
+                                        <div className="card-content py-6">
+                                            <h1 className="card-title">Maths Quiz</h1>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                            <Link to="/games">
-                                <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
-                                    <figure>
-                                    </figure>
-                                    <div className="card-content py-6">
-                                        <h1 className="card-title">Example Game</h1>
+                                </Link>
+                                <Link to="/games">
+                                    <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
+                                        <div className="card-content py-6">
+                                            <h1 className="card-title">Example Game</h1>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                            <Link to="/games">
-                                <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
-                                    <figure>
-                                    </figure>
-                                    <div className="card-content py-6">
-                                        <h1 className="card-title">Example Game</h1>
-                                    </div>
-                                </div>
-                            </Link>
-                            <Link to="/games">
-                                <div className="card card-compact bg-[--b1] rounded-box place-items-center h-full">
-                                    <figure>
-                                    </figure>
-                                    <div className="card-content py-6">
-                                        <h1 className="card-title">Example Game</h1>
-                                    </div>
-                                </div>
-                            </Link>
+                                </Link>
+                            </div>
+                            {/* Leaderboard Section */}
+                            <Leaderboard /> 
                         </div>
-                        <Leaderboard />
                     </div>
                 </BodyCard>
             </div>
@@ -62,4 +44,4 @@ function About() {
     )
 }
 
-export default About
+export default Games

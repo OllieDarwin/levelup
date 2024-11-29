@@ -107,26 +107,35 @@ function Profile() {
         {!userLoggedIn && (<Navigate to="/login" />) }
             
         <div className="min-h-screen h-screen">
-            <Navbar showNav={true}></Navbar>
+            <Navbar showNav={true} />
 
             {/* Main card */}
             <BodyCard>
-                {loading ?
-                <>
-                    <span className="loading loading-infinity loading-lg mx-auto mt-64"></span>
-                </> 
-                :
-                <>
-                    <div className="card card-compact bg-[--b1] w-[50%] mx-auto flex items-center my-auto pb-8">
-                        <img className="size-32 bg-[--b1] rounded-full translate-y-[-50%] mb-[-3rem]" src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} alt="User icon" />
-                        <h1 className="text-2xl font-bold">{username}</h1>
-                        <p className="text-[#CACACA] mb-4">Rank #{rank}</p>
-                        { buttonElement }
+                {loading ? (
+                    <div className="flex justify-center items-center mt-32">
+                        <span className="loading loading-infinity loading-lg"></span>
                     </div>
-                </>
-                }
+                ) : (
+                    <div className="px-6">
+                        <div className="card card-compact bg-[--b1] mx-auto mt-12 md:mt-48 w-full sm:w-[70%] md:w-[50%] lg:w-[40%] px-6 pb-6 rounded-xl flex flex-col items-center">
+                            {/* User profile image */}
+                            <img 
+                                className="size-32 bg-[--b1] rounded-full -mt-12 mb-4" 
+                                src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} 
+                                alt="User icon" 
+                            />
+                            {/* User details */}
+                            <h1 className="text-2xl font-bold text-center">{username}</h1>
+                            <p className="text-[#CACACA] mb-4 text-center">Rank #{rank}</p>
+                            
+                            {/* Button section */}
+                            {buttonElement}
+                        </div>
+                    </div>
+                )}
             </BodyCard>
         </div>
+
     </>
     )
 }

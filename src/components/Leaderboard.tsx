@@ -42,26 +42,41 @@ function Leaderboard() {
     }, [userLoggedIn])
 
     return (
-        <>
-            <div className="join join-vertical w-[36rem] gap-2 bg-[--b1] px-4 py-4 rounded-2xl h-max my-auto">
-                <h1 className="text-xl font-bold ml-2 my-2">Leaderboard</h1>
-                {loading ? 
+        <div className="bg-[--b1] rounded-2xl p-4 w-full lg:w-[36rem]">
+            <h1 className="text-xl font-bold my-2 ml-2">Leaderboard</h1>
+            {loading ? (
                 <span className="loading loading-infinity loading-lg m-auto"></span>
-                : 
-                data.map(({username, xp, iconURL}, i) => (
-                    <Link to={"/profile/" + username}>
-                        <div className={"flex rounded-2xl py-2 " + (username === currentUsername ? "bg-[--p]" : "bg-[--btn-color]")}>
-                            <p className="my-auto mx-8 font-black">{i+1}</p>
-                            <img className="size-12 bg-[--b1] rounded-full my-auto mr-4" src={window.location.origin + (iconURL || "/user-icons/1.png")} alt="User icon" />
-                            <div>
-                                <h1 className="font-bold text-lg">{username}</h1>
-                                <h2 className={(username === currentUsername ? "text-white" : "text-[#CACACA]")}>Score: {xp.toLocaleString()}</h2>
+            ) : (
+                <div className="space-y-4">
+                    {data.map(({ username, xp, iconURL }, i) => (
+                        <Link to={"/profile/" + username} key={i}>
+                            <div
+                                className={`flex items-center rounded-2xl p-4 my-2 ${
+                                    username === currentUsername ? "bg-[--p]" : "bg-[--btn-color]"
+                                }`}
+                            >
+                                <p className="font-black text-lg w-8">{i + 1}</p>
+                                <img
+                                    className="w-12 h-12 bg-[--b1] rounded-full mr-4"
+                                    src={window.location.origin + (iconURL || "/user-icons/1.png")}
+                                    alt="User icon"
+                                />
+                                <div>
+                                    <h1 className="font-bold">{username}</h1>
+                                    <h2
+                                        className={
+                                            username === currentUsername ? "text-white" : "text-[#CACACA]"
+                                        }
+                                    >
+                                        Score: {xp.toLocaleString()}
+                                    </h2>
+                                </div>
                             </div>
-                        </div>
-                    </Link>
-                ))}
-            </div>
-        </>
+                        </Link>
+                    ))}
+                </div>
+            )}
+        </div>
     )
 }
 

@@ -63,23 +63,50 @@ function Alerts() {
             <div className="min-h-screen h-screen">
                 <Navbar showNav={true}></Navbar>
                 <BodyCard>
-                    <h1 className="font-semibold text-center mt-24 text-4xl mb-8">Alerts:</h1>
+                    <h1 className="font-semibold text-center mt-8 lg:mt-24 text-4xl mb-8">Alerts:</h1>
                     {receivedRequests.length === 0 ? <p className="text-center text-[#CACACA] text-xl">You have no alerts.</p>
                     : (receivedRequests.map((request) => (
-                            <div key={request.friendID} className="bg-[--b1] flex rounded-2xl py-4 mx-8 mb-2">
-                                <Link className="mx-8 my-auto"to={`/profile/${request.friendName}`}>
-                                    <img className="size-24 bg-[--b1] rounded-full"src={window.location.origin + (request.iconURL || "/user-icons/1.png")} alt="User icon"/>
-                                </Link>
-                                <div>
-                                    <h1 className="font-bold text-lg">
-                                        <Link to={`/profile/${request.friendName}`}>{request.friendName}</Link> has added you as a friend.</h1>
-                                    <h2 className="text-[#CACACA] mb-4">Would you like to accept?</h2>
-                                    <div className="btn border-none bg-[--p] mr-4" onClick={() => handleAcceptRequest(request.friendID)}>Accept</div>
-                                    <div className="btn border-none bg-[--btn-color]" onClick={() => handleIgnoreRequest(request.friendID)}>
-                                        Ignore</div>
+                        <div key={request.friendID} className="bg-[--b1] flex flex-col md:flex-row items-center md:items-start rounded-2xl py-4 mx-4 mb-2">
+                            {/* Profile Picture */}
+                            <Link
+                                className="mb-4 md:my-auto md:mx-8 w-24 h-24 flex-shrink-0"
+                                to={`/profile/${request.friendName}`}
+                            >
+                                <img
+                                    className="w-24 h-24 object-cover bg-[--b1] rounded-full"
+                                    src={window.location.origin + (request.iconURL || "/user-icons/1.png")}
+                                    alt="User icon"
+                                />
+                            </Link>
+                        
+                            {/* Text and Buttons */}
+                            <div className="text-center md:text-left w-full">
+                                <h1 className="font-bold text-lg mb-2 max-md:mx-4 mx-0">
+                                    <Link to={`/profile/${request.friendName}`}>
+                                        {request.friendName}
+                                    </Link>{" "}
+                                    has added you as a friend.
+                                </h1>
+                                <h2 className="text-[#CACACA] mb-4">
+                                    Would you like to accept?
+                                </h2>
+                                <div className="flex justify-center md:justify-start space-x-4">
+                                    <div
+                                        className="btn border-none bg-[--p] rounded-full px-8"
+                                        onClick={() => handleAcceptRequest(request.friendID)}
+                                    >
+                                        Accept
+                                    </div>
+                                    <div
+                                        className="btn border-none bg-[--btn-color] rounded-full px-8"
+                                        onClick={() => handleIgnoreRequest(request.friendID)}
+                                    >
+                                        Ignore
+                                    </div>
                                 </div>
                             </div>
-                        )))}
+                        </div>
+                    )))}
                 </BodyCard>
             </div>
         </>

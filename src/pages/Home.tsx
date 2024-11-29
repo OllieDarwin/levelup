@@ -48,30 +48,27 @@ function Home() {
     return (
         <>
             {!userLoggedIn && (<Navigate to="/login" />) }
-            
-            <div className="min-h-screen h-screen">
-                <Navbar showNav={true}></Navbar>
+            <Navbar showNav={true}></Navbar>
 
-                {/* Main card */}
-                <BodyCard>
-                    {loading ?
-                    <>
-                        <span className="loading loading-infinity loading-lg mx-auto mt-64"></span>
-                    </> 
-                    :
-                    <>
-                        <div className="mx-8 h-full">
-                            <h1 className="font-semibold text-center mt-24 text-4xl">Welcome to <span className="text-[--p]">LevelUp</span>!</h1>
-                            {username && <h2 className="font-normal text-[#CACACA] text-center mt-8 text-xl">Welcome back, {username || "LOADING"}. Feel free to scroll and see what we’re about and play some games!</h2>}
-                            <div className="mx-24">
-                                <h3 className="font-semibold text-xl mt-8 mx-4 mb-4">Friends</h3>
-                                <Friends data={friends} />
-                            </div>
+            {/* Main card */}
+            <BodyCard>
+                {loading ?
+                <>
+                    <span className="loading loading-infinity loading-lg mx-auto mt-64 block"></span>
+                </> 
+                :
+                <>
+                    <div className="mx-8 h-full">
+                        <h1 className="font-semibold text-center mt-8 text-4xl lg:mt-24">Welcome to <span className="text-[--p]">LevelUp</span>!</h1>
+                        {username && <h2 className="font-normal text-[#CACACA] text-center mt-8 text-xl">Welcome back, {username || "LOADING"}. Feel free to scroll and see what we’re about and play some games!</h2>}
+                        <div className="lg:mx-12 mb-8">
+                            <h3 className="font-semibold text-xl mt-8 mx-4 mb-4">Friends</h3>
+                            <Friends data={friends} />
                         </div>
-                    </>
-                    }
-                </BodyCard>
-            </div>
+                    </div>
+                </>
+                }
+            </BodyCard>
         </>
     )
 }
