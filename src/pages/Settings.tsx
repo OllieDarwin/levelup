@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../contexts/authContext"
 import BodyCard from "../components/BodyCard"
 import { doSignOut } from "../firebase/auth"
+import PageTitle from "../components/PageTitle"
 
 function Settings() {
     const { userLoggedIn } = useAuth()
@@ -36,6 +37,7 @@ function Settings() {
 
     return (
         <>
+            <PageTitle title="Settings" />
             {!userLoggedIn && (<Navigate to="/login" />) }
             
             <div className="min-h-screen h-screen">

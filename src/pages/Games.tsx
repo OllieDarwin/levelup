@@ -4,12 +4,14 @@ import { useAuth } from "../contexts/authContext"
 import BodyCard from "../components/BodyCard"
 
 import Leaderboard from "../components/Leaderboard"
+import PageTitle from "../components/PageTitle"
 
 function Games() {
     const { userLoggedIn } = useAuth()
     
     return (
         <>
+            <PageTitle title="Games" />
             {!userLoggedIn && <Navigate to="/login" />}
 
             <div className="min-h-screen">

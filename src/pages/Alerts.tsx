@@ -5,6 +5,7 @@ import BodyCard from "../components/BodyCard"
 import { useEffect, useState } from "react"
 import { acceptFriendRequest, getFriendRequests, ignoreFriendRequest } from "../firebase/auth"
 import { Timestamp } from "firebase/firestore"
+import PageTitle from "../components/PageTitle"
 
 function Alerts() {
     const { currentUser, userLoggedIn } = useAuth()
@@ -58,6 +59,7 @@ function Alerts() {
 
     return (
         <>
+            <PageTitle title="Alerts" />
             {!userLoggedIn && <Navigate to="/login" />}
 
             <div className="min-h-screen h-screen">

@@ -6,6 +6,7 @@ import BodyCard from "../../components/BodyCard"
 import { useEffect, useState } from "react"
 import { generateQuestion, getSolution } from "../../services/aiService"
 import { fetchUserProfile, saveUserProfile } from "../../firebase/auth"
+import PageTitle from "../../components/PageTitle"
 
 function Quiz() {
     const location = useLocation()
@@ -139,6 +140,7 @@ function Quiz() {
 
     return (
         <>
+            <PageTitle title="Quiz" />
             {!userLoggedIn && (<Navigate to="/login" />) }
             
             <div className="min-h-screen h-screen">

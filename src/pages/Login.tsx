@@ -4,6 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import { doSignInWithEmailAndPassword } from "../firebase/auth";
 import BodyCard from "../components/BodyCard";
+import PageTitle from "../components/PageTitle";
 
 function Login() {
     const { userLoggedIn } = useAuth()
@@ -39,6 +40,7 @@ function Login() {
 
     return (
         <>
+            <PageTitle title="Login" />
             {userLoggedIn && (<Navigate to={'/home'} replace={true} />)}
 
             <div className="min-h-screen h-screen">

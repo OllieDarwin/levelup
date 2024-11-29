@@ -4,6 +4,7 @@ import { acceptFriendRequest, fetchUserProfile, getUserProfileByUsername, getUse
 import Navbar from "../components/Navbar"
 import BodyCard from "../components/BodyCard"
 import { useAuth } from "../contexts/authContext"
+import PageTitle from "../components/PageTitle"
 
 // TODO: Add more user data and user can edit profile?
 
@@ -103,6 +104,8 @@ function Profile() {
 
     return (
     <>
+        {username && <PageTitle title={username} />}
+        {!username && <PageTitle title="Profile" />}
         {!userLoggedIn && (<Navigate to="/login" />) }
             
         <div className="min-h-screen h-screen">
