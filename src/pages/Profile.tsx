@@ -66,7 +66,6 @@ function Profile() {
     // Watch for changes to userRelationship to update the button state
     useEffect(() => {
         const updateButtonState = () => {
-            console.log(userRelationship)
             if (!currentUser) {
                 setButtonElement(<></>)
                 return

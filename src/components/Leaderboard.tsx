@@ -42,7 +42,7 @@ function Leaderboard() {
     }, [userLoggedIn])
 
     return (
-        <div className="bg-[--b1] rounded-2xl p-4 w-full lg:w-[36rem]">
+        <div className="bg-[--b1] rounded-2xl p-4 w-full lg:w-[20rem]">
             <h1 className="text-xl font-bold my-2 ml-2">Leaderboard</h1>
             {loading ? (
                 <span className="loading loading-infinity loading-lg m-auto"></span>

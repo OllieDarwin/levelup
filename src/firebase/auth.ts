@@ -313,8 +313,6 @@ export const getTopFriends = async (userID: string) => {
         const friendsQuery = query(friendsRef, limit(8))
         const querySnapshot = await getDocs(friendsQuery)
 
-        console.log("Number of friends found:", querySnapshot.size)
-
         // Map the friends and fetch the data for each friendID
         const friends = await Promise.all(
             

@@ -1,4 +1,4 @@
-import { Link, Navigate } from "react-router-dom"
+import { Link, Navigate, useLocation } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import { useAuth } from "../../contexts/authContext"
 import BodyCard from "../../components/BodyCard"
@@ -8,6 +8,7 @@ import { generateQuestion, getSolution } from "../../services/aiService"
 import { fetchUserProfile, saveUserProfile } from "../../firebase/auth"
 
 function Quiz() {
+    const location = useLocation()
 
     // User state
     const { currentUser, userLoggedIn } = useAuth()
@@ -41,6 +42,19 @@ function Quiz() {
     const [showScore, setShowScore] = useState(false)
     const [gameEnded, setGameEnded] = useState(false)
     const [timeTicking, setTimeTicking] = useState(true)
+
+    useEffect(() => {
+        const handlePageChange = () => {
+            if (score > 0 && currentUser !== null) {
+                saveUserProfile(currentUser.uid, { xp: currentXP + score })
+                    .catch((error) => console.error("Error saving score:", error))
+            }
+        }
+
+        return () => {
+            handlePageChange()
+        }
+    }, [location, score, currentUser, currentXP])
 
     // Timer
     useEffect(() => {
