@@ -48,7 +48,7 @@ function Settings() {
                     <h1 className="font-semibold text-center mt-8 lg:mt-24 text-4xl">Settings</h1>
                     <div className="form-control">
                         <label className="label cursor-pointer w-[20%] mx-auto my-16">
-                            <span className="label-text text-lg">Dyslexia-friendly font</span>
+                            <span className="label-text text-lg text-[#CACACA]">Dyslexia-friendly font</span>
                             <input type="checkbox" onChange={handleToggle} checked={useDyslexiaFont} className="toggle checked:bg-[--p] checked:border-[--p] checked:text-[--p]" />
                         </label>
                     </div>

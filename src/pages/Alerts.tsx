@@ -76,7 +76,7 @@ function Alerts() {
                             >
                                 <img
                                     className="w-24 h-24 object-cover bg-[--b1] rounded-full"
-                                    src={window.location.origin + (request.iconURL || "/user-icons/1.png")}
+                                    src={request.iconURL }
                                     alt="User icon"
                                 />
                             </Link>

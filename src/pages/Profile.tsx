@@ -123,7 +123,7 @@ function Profile() {
                             {/* User profile image */}
                             <img 
                                 className="size-32 bg-[--b1] rounded-full -mt-12 mb-4" 
-                                src={window.location.origin + (profile.iconURL || "/user-icons/1.png")} 
+                                src={profile.iconURL} 
                                 alt="User icon" 
                             />
                             {/* User details */}

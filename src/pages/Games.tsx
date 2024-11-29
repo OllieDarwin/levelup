@@ -16,9 +16,9 @@ function Games() {
 
             <div className="min-h-screen">
                 <Navbar showNav={true}></Navbar>
-                <BodyCard>
-                    <div className="p-4 block mt-8 max-md:mt-0">
-                        <div className="grid grid-cols-1 lg:grid-cols-[5fr_2fr] gap-8 h-full w-full">
+                <BodyCard className="h-full flex flex-col">
+                    <div className="p-4 h-full flex-grow flex flex-col">
+                        <div className="grid grid-cols-1 lg:grid-cols-[5fr_2fr] gap-8 h-full w-full my-auto">
                             {/* Games Section */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                                 <Link to="/games/quiz">

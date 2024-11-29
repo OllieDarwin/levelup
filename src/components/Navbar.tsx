@@ -137,13 +137,7 @@ function Navbar({ showNav }: Props) {
             </div>
             {/* Tablet & Phone */}
             <div className="navbar px-[3%]h-[6.05rem] md:hidden">
-                <div className="navbar-start">
-                    <div className="navbar-start mb-auto mt-2">
-                        <Link to="/">
-                            <img className="h-8 mt-2 ml-5" src={window.location.origin + "/images/levelup-icon.svg"} alt="LevelUp" />
-                        </Link>
-                    </div>
-                </div>
+                <div className="navbar-start"></div>
                 <div className="navbar-center">
                     <div className="flex flex-col items-center mt-4">
                         <div className="join join-horizontal rounded-full bg-[#1E1E1E]">

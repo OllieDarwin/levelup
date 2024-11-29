@@ -24,7 +24,7 @@ function Friends({ data }: Props) {
                 <Link to={"/profile/" + username}>
                     <img
                         className="w-24 h-24 bg-[--b1] rounded-full mx-auto object-cover"
-                        src={window.location.origin + iconURL}
+                        src={iconURL}
                         alt="User icon"
                     />
                     <h3 className="text-md font-medium mt-2 truncate">

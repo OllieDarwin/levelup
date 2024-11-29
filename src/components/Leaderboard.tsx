@@ -42,7 +42,7 @@ function Leaderboard() {
     }, [userLoggedIn])
 
     return (
-        <div className="bg-[--b1] rounded-2xl p-4 w-full lg:w-[20rem]">
+        <div className="bg-[--b1] rounded-2xl p-4 w-full lg:min-w-[20rem]">
             <h1 className="text-xl font-bold my-2 ml-2">Leaderboard</h1>
             {loading ? (
                 <span className="loading loading-infinity loading-lg m-auto"></span>
@@ -58,7 +58,7 @@ function Leaderboard() {
                                 <p className="font-black text-lg w-8">{i + 1}</p>
                                 <img
                                     className="w-12 h-12 bg-[--b1] rounded-full mr-4"
-                                    src={window.location.origin + (iconURL || "/user-icons/1.png")}
+                                    src={iconURL}
                                     alt="User icon"
                                 />
                                 <div>
