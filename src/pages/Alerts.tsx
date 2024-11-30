@@ -94,13 +94,13 @@ function Alerts() {
                                 </h2>
                                 <div className="flex justify-center md:justify-start space-x-4">
                                     <div
-                                        className="btn border-none bg-[--p] rounded-full px-8"
+                                        className="btn border-none bg-[--p] rounded-full px-6 py-2"
                                         onClick={() => handleAcceptRequest(request.friendID)}
                                     >
                                         Accept
                                     </div>
                                     <div
-                                        className="btn border-none bg-[--btn-color] rounded-full px-8"
+                                        className="btn border-none bg-[--btn-color] rounded-full px-6 py-2"
                                         onClick={() => handleIgnoreRequest(request.friendID)}
                                     >
                                         Ignore

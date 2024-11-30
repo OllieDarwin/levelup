@@ -355,3 +355,14 @@ export const getTopFriends = async (userID: string) => {
         throw error
     }
 }
+
+export const saveUserSettings = async (userId: string, settings: any) => {
+    const userRef = doc(db, "users", userId)
+    await setDoc(userRef, { settings }, { merge: true })
+}
+
+export const fetchUserSettings = async (userId: string) => {
+    const userRef = doc(db, "users", userId)
+    const docSnapshot = await getDoc(userRef)
+    return docSnapshot.exists() ? docSnapshot.data().settings : null
+}

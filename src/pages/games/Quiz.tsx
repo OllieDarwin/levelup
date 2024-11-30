@@ -5,7 +5,7 @@ import BodyCard from "../../components/BodyCard"
 
 import { useEffect, useState } from "react"
 import { generateQuestion, getSolution } from "../../services/aiService"
-import { fetchUserProfile, saveUserProfile } from "../../firebase/auth"
+import { fetchUserProfile, fetchUserSettings, saveUserProfile } from "../../firebase/auth"
 import PageTitle from "../../components/PageTitle"
 
 function Quiz() {
@@ -86,8 +86,11 @@ function Quiz() {
 
     const loadQuestion = async () => {
         setLoadingQuestion(true)
-        const question = await generateQuestion()
-        setQuestion(question)
+        if(currentUser) {
+            const userSettings = await fetchUserSettings(currentUser.uid)
+            const question = await generateQuestion(userSettings?.studyTopics || "GCSE maths questions")
+            setQuestion(question)
+        }
         setLoadingQuestion(false)
     }
 

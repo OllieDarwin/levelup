@@ -7,33 +7,29 @@ const openai = new OpenAI({
 })
 
 // Generates maths question using AI for QUIZ GAME
-export async function generateQuestion() {
+export async function generateQuestion(studyTopics: string) {
     try {
-      const prompt = `
-        Generate a GCSE Maths question suitable for a Grade 6 level student. 
+      const prompt = `You are an educational assistant specialised in maths. Generate a question based on the following:
+        The user has described themself, the course they are doing and what questions they would like to be asked: ${studyTopics}.
+        The question should be of medium difficulty.
+
         Provide it in clear language, and ensure it is solvable without advanced techniques.
-        Example types: algebra, geometry, fractions, percentages.
 
         Your response **must only** include valid JSON that adheres to this schema:
         {
-        "question": "string",
-        "title": "string",
-        "description": "string"
+          "question": "Your question here",
+          "title": "A clearly defined topic or title of the question",
+          "description": "A bried, concise description of the topic."
         }
 
-        Do not include any text outside of this JSON object. Do not add comments, explanations, or any other information. Only output the JSON object.
+        Please ensure you return a valid json schema using the template above. All the keys should be assinged to strings.
 
-        The question is the question itself.
-        The title is a bried title describing the topic of the question.
-        The description is a brief, concise description of the topic and a small hint on how the question may be solved.
-
-        Generate a question now:
+        Generate a question using all of the above information now:
       `
       
       const response = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [{ role: "user", content: prompt }],
-        max_tokens: 300,
         temperature: 1.5,
         response_format: {
             type: 'json_schema',
@@ -74,6 +70,7 @@ export async function getSolution(question: string, userSolution: string) {
         I do not care about the units given or how much working is shown: if the correct answer to the question can be found anywhere in their solution then say correct = true.
 
         Do not try to include any formatting in your response as I cannot display it.
+        Do not generate a response any longer than 50-60 words.
 
         You will have to respond in a JSON schema with the following keys:
         correct: determine if the user was correct or incorrect and return a corresponding boolean value
@@ -98,6 +95,8 @@ export async function getSolution(question: string, userSolution: string) {
             }
         }
       })
+
+      console.log(response)
   
       if (response.choices[0].message.content === null) {
         throw "No response found"
