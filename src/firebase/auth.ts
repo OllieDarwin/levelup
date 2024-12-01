@@ -2,9 +2,6 @@ import { auth } from "./firebase-config";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    sendPasswordResetEmail,
-    sendEmailVerification,
-    updatePassword
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc, collection, orderBy, limit, query, getDocs, setDoc, where, serverTimestamp, Timestamp, deleteDoc } from "firebase/firestore";
 
@@ -24,6 +21,12 @@ const defaultUserProfile: UserProfile = {
     iconURL: `/user-icons/${Math.floor(Math.random()*7)+1}.png`
 }
 
+/**
+ * Create user
+ * @param email Desired email
+ * @param password Desired password
+ * @returns the user's new credential
+ */
 export const doCreateUserWithEmailAndPassword = async (email: string, password: string) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     const userDocRef = doc(db, "users", userCredential.user.uid)
@@ -31,32 +34,27 @@ export const doCreateUserWithEmailAndPassword = async (email: string, password: 
     return userCredential
 };
 
+/**
+ * Sign in
+ * @returns Result
+ */
 export const doSignInWithEmailAndPassword = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
 };
 
+/**
+ * Sign out
+ * @returns Result
+ */
 export const doSignOut = () => {
     return auth.signOut();
 };
 
-export const doPasswordReset = (email: string) => {
-    return sendPasswordResetEmail(auth, email);
-};
-
-export const doPasswordChange = (password: string) => {
-    if (auth.currentUser !== null) {
-        return updatePassword(auth.currentUser, password);
-    }
-};
-
-export const doSendEmailVerification = () => {
-    if (auth.currentUser !== null) {
-        return sendEmailVerification(auth.currentUser, {
-            url: `${window.location.origin}/home`,
-        });
-    }
-};
-
+/**
+ * Save a user profile
+ * @param userID ID of the desired user
+ * @param profile Data to save
+ */
 export const saveUserProfile = async (userId: string, profile: Partial<UserProfile>) => {
     try {
         const userDocRef = doc(db, "users", userId)
@@ -67,6 +65,11 @@ export const saveUserProfile = async (userId: string, profile: Partial<UserProfi
     }
 }
 
+/**
+ * Get a user's profile by ID
+ * @param userID ID of the desired user
+ * @returns Their user profile
+ */
 export const fetchUserProfile = async (userId: string | null) => {
     if (userId === null) {
         return null
@@ -88,6 +91,10 @@ export const fetchUserProfile = async (userId: string | null) => {
     }
 };
 
+/**
+ * Get a list of the top 5 users by XP
+ * @returns A list of the top 5 user profiles by XP
+ */
 export const getTopUsersByXP = async (): Promise<{userID: string, username: string, xp: number, iconURL: string}[]> => {
     try {
         const userCollection = collection(db, "users")
@@ -105,6 +112,11 @@ export const getTopUsersByXP = async (): Promise<{userID: string, username: stri
     }
 }
 
+/**
+ * Get a user's profile by username
+ * @param username Username of the desired user
+ * @returns Their user profile
+ */
 export const getUserProfileByUsername = async (username: string) => {
     try {
         const userCollection = collection(db, "users")
@@ -121,6 +133,11 @@ export const getUserProfileByUsername = async (username: string) => {
     }
 }
 
+/**
+ * Get the user's XP rank
+ * @param userID ID of desired user
+ * @returns a number detailing the user's XP rank
+ */
 export const getUserXPRankByID = async (userID: string) => {
     try {
         const userCollection = collection(db, "users")
@@ -140,6 +157,11 @@ export const getUserXPRankByID = async (userID: string) => {
     }
 }
 
+/**
+ * Create a friend requests from one user to another
+ * @param userID ID of one user (current, sender)
+ * @param friendID ID of other user (recipient)
+ */
 export const sendFriendRequest = async (userID: string, friendID: string) => {
     try {
         const userRef = doc(db, "users", userID, "friendRequests", friendID)
@@ -167,6 +189,11 @@ export const sendFriendRequest = async (userID: string, friendID: string) => {
     }
 }
 
+/**
+ * Get a list of friend requests from a user
+ * @param userID ID of the desired user
+ * @returns Aa list of all friend requests the user has sent or received
+ */
 export const getFriendRequests = async (userID: string) => {
     try {
         const friendRequestsRef = collection(db, "users", userID, "friendRequests")
@@ -206,6 +233,11 @@ export const getFriendRequests = async (userID: string) => {
     }
 }
 
+/**
+ * Accept a friend request from one user to another
+ * @param userID ID of one user (current)
+ * @param friendID ID of other user
+ */
 export const acceptFriendRequest = async (userID: string, friendID: string) => {
     try {
         const userFriendsRef = doc(db, "users", userID, "friends", friendID)
@@ -234,6 +266,11 @@ export const acceptFriendRequest = async (userID: string, friendID: string) => {
     }
 }
 
+/**
+ * Ignore a friend request from one user to another
+ * @param userID ID of one user (current)
+ * @param friendID ID of other user
+ */
 export const ignoreFriendRequest = async (userID: string, friendID: string) => {
     try {
         const userRequestRef = doc(db, "users", userID, "friendRequests", friendID)
@@ -250,6 +287,11 @@ export const ignoreFriendRequest = async (userID: string, friendID: string) => {
     }
 }
 
+/**
+ * Get username from user using their user ID
+ * @param userID The ID of the to get the username from
+ * @returns the string of the username
+ */
 export const getUsernameFromID = async (userID: string) => {
     try {
         const userDocRef = doc(db, "users", userID)
@@ -264,6 +306,11 @@ export const getUsernameFromID = async (userID: string) => {
     }
 }
 
+/**
+ * Get user icon using their user ID
+ * @param userID The ID of the user to get the icon from
+ * @returns the string of the user icon location
+ */
 export const getUserIconFromID = async (userID: string) => {
     try {
         const userDocRef = doc(db, "users", userID)
@@ -279,6 +326,12 @@ export const getUserIconFromID = async (userID: string) => {
     }
 }
 
+/**
+ * Get the relationship between two users
+ * @param userID One user (current)
+ * @param friendID The other user
+ * @returns "friends" || "pending" || "received" || "none"
+ */
 export const getUserRelationship = async (userID: string, friendID: string) => {
     if (!userID || !friendID) {
         console.error("Invalid userID or friendID provided:", { userID, friendID })
@@ -307,6 +360,11 @@ export const getUserRelationship = async (userID: string, friendID: string) => {
     }
 }
 
+/**
+ * Get a list of 8 of the user's friends.
+ * @param userID The userID to get friends for
+ * @returns An array of user objects
+ */
 export const getTopFriends = async (userID: string) => {
     try {
         const friendsRef = collection(db, "users", userID, "friends")
@@ -356,13 +414,45 @@ export const getTopFriends = async (userID: string) => {
     }
 }
 
+/**
+ * Save the user settings
+ * @param userID The userID to save settings for
+ */
 export const saveUserSettings = async (userId: string, settings: any) => {
     const userRef = doc(db, "users", userId)
     await setDoc(userRef, { settings }, { merge: true })
 }
 
+/**
+ * Get the user settings from firestore.
+ * @param userID The userID to fetch settings for
+ * @returns User settings
+ */
 export const fetchUserSettings = async (userId: string) => {
     const userRef = doc(db, "users", userId)
     const docSnapshot = await getDoc(userRef)
     return docSnapshot.exists() ? docSnapshot.data().settings : null
+}
+
+/**
+ * Query users from Firestore matching the search term.
+ * @param searchTerm The string to search for
+ * @returns Array of user objects
+ */
+export const searchUsers = async (searchTerm: string) => {
+    const usersRef = collection(db, "users")
+    const q = query(
+        usersRef,
+        where("username", ">=", searchTerm),
+        where("username", "<=", searchTerm + "\uf8ff") // Firestore range query
+    )
+
+    const querySnapshot = await getDocs(q)
+    const users: { userID: string, username: string, iconURL: string }[] = []
+    querySnapshot.forEach((doc) => {
+        const data = doc.data() as { username: string, iconURL: string }
+        users.push({ userID: doc.id, ...data })
+    });
+
+    return users
 }

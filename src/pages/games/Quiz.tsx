@@ -38,7 +38,7 @@ function Quiz() {
 
     // Overall game state
     const [playing, setPlaying] = useState(false)
-    const [leftoverTime, setLeftoverTime] = useState(60)
+    const [leftoverTime, setLeftoverTime] = useState(120)
     const [score, setScore] = useState(0)
     const [showScore, setShowScore] = useState(false)
     const [gameEnded, setGameEnded] = useState(false)
@@ -88,7 +88,7 @@ function Quiz() {
         setLoadingQuestion(true)
         if(currentUser) {
             const userSettings = await fetchUserSettings(currentUser.uid)
-            const question = await generateQuestion(userSettings?.studyTopics || "GCSE maths questions")
+            const question = await generateQuestion(userSettings?.studyTopics || "Grade 6 GCSE Maths questions")
             setQuestion(question)
         }
         setLoadingQuestion(false)

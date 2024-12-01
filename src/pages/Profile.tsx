@@ -5,8 +5,7 @@ import Navbar from "../components/Navbar"
 import BodyCard from "../components/BodyCard"
 import { useAuth } from "../contexts/authContext"
 import PageTitle from "../components/PageTitle"
-
-// TODO: Add more user data and user can edit profile?
+import UserSearch from "../components/UserSearch"
 
 function Profile() {
     const { currentUser, userLoggedIn } = useAuth()
@@ -119,7 +118,8 @@ function Profile() {
                     </div>
                 ) : (
                     <div className="px-6">
-                        <div className="card card-compact bg-[--b1] mx-auto mt-12 md:mt-48 w-full sm:w-[70%] md:w-[50%] lg:w-[40%] px-6 pb-6 rounded-xl flex flex-col items-center">
+                        <UserSearch />
+                        <div className="card card-compact bg-[--b1] mx-auto mt-36 w-full sm:w-[70%] md:w-[50%] lg:w-[40%] px-6 pb-6 rounded-xl flex flex-col items-center">
                             {/* User profile image */}
                             <img 
                                 className="size-32 bg-[--b1] rounded-full -mt-12 mb-4" 

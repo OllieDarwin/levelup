@@ -5,8 +5,6 @@ import { Link, Navigate } from "react-router-dom";
 import { doCreateUserWithEmailAndPassword, saveUserProfile } from "../firebase/auth";
 import BodyCard from "../components/BodyCard";
 
-// TODO: ADD INPUT VALIDATION (AND MAYBE GET MORE DATA)
-
 function SignUp() {
     const { userLoggedIn } = useAuth()
 

@@ -7,8 +7,6 @@ import { fetchUserProfile, getTopFriends } from "../firebase/auth"
 import Friends from "../components/Friends"
 import PageTitle from "../components/PageTitle"
 
-// TODO: Add friends view and Games
-
 function Home() {
     const { currentUser, userLoggedIn } = useAuth()
     const [username, setUsername] = useState("")
