@@ -1,6 +1,7 @@
 import { auth } from "./firebase-config";
 import {
     createUserWithEmailAndPassword,
+    sendPasswordResetEmail,
     signInWithEmailAndPassword,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc, collection, orderBy, limit, query, getDocs, setDoc, where, serverTimestamp, Timestamp, deleteDoc } from "firebase/firestore";
@@ -48,6 +49,15 @@ export const doSignInWithEmailAndPassword = (email: string, password: string) =>
  */
 export const doSignOut = () => {
     return auth.signOut();
+};
+
+/**
+ * Send password reset email
+ * @param email email of the desired user
+ * @returns Result
+ */
+export const doPasswordReset = (email: string) => {
+    return sendPasswordResetEmail(auth, email);
 };
 
 /**
@@ -456,3 +466,22 @@ export const searchUsers = async (searchTerm: string) => {
 
     return users
 }
+
+/**
+ * Checks if a given username already exists in the Firestore database.
+ * @param username - The username to check.
+ * @returns A promise that resolves to true if the username exists, false otherwise.
+ */
+export const doesUsernameExist = async (username: string): Promise<boolean> => {
+    try {
+        const usersRef = collection(db, "users"); // Replace "users" with your actual collection name
+        const q = query(usersRef, where("username", "==", username));
+        const querySnapshot = await getDocs(q);
+
+        // If the query returns any documents, the username exists
+        return !querySnapshot.empty;
+    } catch (error) {
+        console.error("Error checking username existence:", error);
+        return false; // Handle errors gracefully by returning false
+    }
+};
